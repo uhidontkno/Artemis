@@ -1,2 +1,2 @@
-require("bot/index.ts")
-require("server/index.ts")
+require("./bot/index.ts")
+require("./server/index.ts")
