@@ -7,5 +7,11 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@elysiajs/static": "^1.0.3",
+    "elysia": "^1.0.21",
+    "elysia-rate-limit": "^4.0.0",
+    "seyfert": "^1.4.0"
   }
 }
