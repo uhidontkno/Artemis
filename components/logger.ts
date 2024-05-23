@@ -7,23 +7,27 @@ export enum loggingLevels {
 }
 export let logLevel = loggingLevels.Info;
 export function debug(...msg:any[]) {
-    if (logLevel <= 4) {
-        console.log(c.bold(c.brightGray("debug")) + ": " +msg)
+    let m = msg.join(" ")
+    if (logLevel >= 4) {
+        console.log(c.brightGray("debug") + ": " +m)
     }
 }
 export function info(...msg:any[]) {
-    if (logLevel <= 3) {
-        console.log(c.bold(c.brightBlue("info")) + ": " +msg)
+    let m = msg.join(" ")
+    if (logLevel >= 3) {
+        console.log(c.brightBlue("info") + ": " +m)
     }
 }
 export function warn(...msg:any[]) {
-    if (logLevel <= 2) {
-        console.warn(c.bold(c.brightYellow("warn")) + ": " +c.bold(msg))
+    let m = msg.join(" ")
+    if (logLevel >= 2) {
+        console.warn(c.brightYellow.bold("warn") + ": " +c.bold(m))
     }
 }
 export function error(...msg:any[]) {
-    if (logLevel <= 1) {
-        console.error(c.bold(c.brightRed("error")) + ": " +c.bold(msg))
+    let m = msg.join(" ")
+    if (logLevel >= 1) {
+        console.error(c.brightRed.bold("error") + ": " +c.bold(m))
     }
 }
 
