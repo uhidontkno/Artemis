@@ -1,8 +1,10 @@
 import Elysia from "elysia";
 import { rateLimit } from "elysia-rate-limit";
 import staticPlugin from "@elysiajs/static";
+
 import logger from "../components/logger"
 import config from "./config"
+import { isVPN } from "../components/helper";
 
 import { nocache } from 'elysia-nocache';
 import { compression } from 'elysia-compression'
@@ -24,6 +26,13 @@ app.use(compression())
 app.use(ip())
 
 app.get("/api/",()=>{return "Alive!"})
+
+app.get("/api/isvpn",( { ip } )=>{
+    return isVPN(ip)
+})
+app.get("/api/isvpn/:ip",( { params } )=>{
+    return isVPN(params.ip)
+})
 
 app.listen(config.webserver.port,()=>{
     logger.info(`Starting server on port ${c.bold(config.webserver.port)}`)
