@@ -7,6 +7,6 @@ module.exports = {
   plugins: [require("@catppuccin/tailwindcss")({
     prefix: "",
     defaultFlavour: "mocha",
-  }),],
+  })],
 }
 
