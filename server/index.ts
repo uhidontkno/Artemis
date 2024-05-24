@@ -11,6 +11,12 @@ import { ip } from "elysia-ip";
 const c = require("colors/safe")
 const app:Elysia = new Elysia()
 
+if (!(await (Bun.file("db.sql")).exists())) {
+    logger.warn("Database file (db.sql) does not exist.")
+    logger.info("Creating database file.")
+    Bun.write("db.sql","")
+}
+
 app.use(rateLimit(config.ratelimit))
 app.use(staticPlugin({"assets":"server/static/","prefix":"/"}))
 app.use(nocache)

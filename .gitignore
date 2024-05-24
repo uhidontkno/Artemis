@@ -176,3 +176,5 @@ dist
 
 
 server/static/app.css
+db.sql
+testingdb.sql

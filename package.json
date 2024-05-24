@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "tailwindcss -i server/static/tw.css -o server/static/app.css -m -w",
-    "start": "bun run build & sleep 1 && bun run index.ts"
+    "start": "bun run build & sleep 1 && bash start.sh"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
