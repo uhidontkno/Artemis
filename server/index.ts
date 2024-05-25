@@ -15,7 +15,7 @@ import { dbopen, dbread,dbdroptable,dbmaketable } from "../components/sqllite";
     let db = dbopen("db.sql")
     // clear table
     dbdroptable(db,"verification_tokens")
-    dbmaketable(db,"verification_tokens")
+    setTimeout(()=>{db.close(true)},100)
 })();
 
 const c = require("colors/safe")

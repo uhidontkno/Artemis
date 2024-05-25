@@ -4,13 +4,15 @@ import sqllite from "bun:sqlite";
 export function dbopen(addr: string, create: boolean = true): sqllite {
   return new sqllite(addr, { create: create });
 }
-export function dbmaketable(db: sqllite, table: string) {
+export function dbmaketable(db: sqllite, table: string, shouldNotExist: boolean = false) {
   const sql = `SELECT name FROM sqlite_master WHERE type='table' AND name=?`;
   const stmt = db.prepare(sql);
   const result = stmt.get(table);
 
   if (!result) {
     db.exec(`CREATE TABLE ${table} (name TEXT PRIMARY KEY, value TEXT)`);
+  } else if (result && shouldNotExist) {
+    throw new Error("Table exists")
   }
 }
 export function dbdroptable(db: sqllite, table: string) {
@@ -18,9 +20,8 @@ export function dbdroptable(db: sqllite, table: string) {
   const sql = `SELECT name FROM sqlite_master WHERE type='table' AND name=?`;
   const stmt = db.prepare(sql);
   const result = stmt.get(table);
-
-  if (!result) {
-    db.exec(`DROP TABLE IF EXISTS ${table}`);
+  if (result) {
+    db.run(`DROP TABLE ${table};`);
   }
 }
 export function dbwrite(
