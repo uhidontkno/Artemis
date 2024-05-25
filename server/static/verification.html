@@ -8,11 +8,30 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         html,body {font-family:"Inter",sans-serif;}
+        @keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
     </style>
+    <script src="detectincognito.min.js"></script>
+    <script src="verification.js"></script>
 </head>
 <body class="w-full h-screen flex flex-col justify-center align-middle items-center bg-base text-text mocha">
-    <h1 class="text-3xl font-bold">Verifying...</h1>
+    <h1 class="text-3xl font-bold text-mauve duration-500">Verifying...</h1>
     <object data="svg/loading-anim.svg" width="96" height="100"/>
-    <script src="verification.js"></script>
+    
 </body>
 </html>

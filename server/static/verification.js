@@ -1,3 +1,5 @@
+
+
 function failVerif(reason) {
     let s = document.querySelector("object").contentDocument
 s.querySelector("#big-star").style.animation = "none"
@@ -8,6 +10,8 @@ s.querySelector("#small-star").style.animation="1.5s cubic-bezier(0.65, 0.05, 0.
 s.querySelector("#big-star").style.stroke = "#e78284"
 s.querySelector("#small-star").style.stroke = "#e78284"
 s.querySelector("#moon").style.stroke = "#e78284"
+document.querySelector("h1").style.color = "#e78284"
+document.querySelector("h1").style.animation = "shake 0.82s cubic-bezier(.36,.07,.19,.97) both"
 },100)
 document.querySelector("h1").innerText = reason;
 }
@@ -22,6 +26,20 @@ s.querySelector("#small-star").style.animation="1.5s cubic-bezier(0.65, 0.05, 0.
 s.querySelector("#big-star").style.stroke = "#a6d189"
 s.querySelector("#small-star").style.stroke = "#a6d189"
 s.querySelector("#moon").style.stroke = "#a6d189"
+document.querySelector("h1").style.color = "#a6d189"
 },100)
 document.querySelector("h1").innerText = "Success! You can now close this tab.";
 }
+setTimeout(()=>{
+    if (document.cookie.indexOf("43616368652E5665726966696564") != -1) {
+        failVerif("You already verified")
+    }
+    
+    detectIncognito().then((result) => {
+        if (result.isPrivate) {
+            failVerif("Incognito Mode detected")
+        }
+      });
+},500)
+    
+
