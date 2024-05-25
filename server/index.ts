@@ -9,7 +9,14 @@ import { isVPN, startVerification } from "../components/helper";
 import { nocache } from 'elysia-nocache';
 import { compression } from 'elysia-compression'
 import { ip } from "elysia-ip";
-import { dbopen, dbread } from "../components/sqllite";
+import { dbopen, dbread,dbdroptable,dbmaketable } from "../components/sqllite";
+
+(()=>{
+    let db = dbopen("db.sql")
+    // clear table
+    dbdroptable(db,"verification_tokens")
+    dbmaketable(db,"verification_tokens")
+})();
 
 const c = require("colors/safe")
 const app:Elysia = new Elysia()
