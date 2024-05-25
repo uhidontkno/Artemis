@@ -4,11 +4,12 @@ import staticPlugin from "@elysiajs/static";
 
 import logger from "../components/logger"
 import config from "./config"
-import { isVPN } from "../components/helper";
+import { isVPN, startVerification } from "../components/helper";
 
 import { nocache } from 'elysia-nocache';
 import { compression } from 'elysia-compression'
 import { ip } from "elysia-ip";
+import { dbopen, dbread } from "../components/sqllite";
 
 const c = require("colors/safe")
 const app:Elysia = new Elysia()
@@ -32,6 +33,20 @@ app.get("/api/isvpn",( { ip } )=>{
 })
 app.get("/api/isvpn/:ip",( { params } )=>{
     return isVPN(params.ip)
+})
+
+app.get("/verify/start",( { })=>{
+    return startVerification(1233456654323456)
+})
+app.get("/verify/:code/exists",( { params })=>{
+    let db = dbopen("db.sql")
+    if (dbread(db,"verification_tokens",params.code) != null) {
+        return true
+    } else {return false}
+    
+})
+app.get("/verify/:code/",()=>{
+    return Bun.file("static/verification.html")
 })
 
 app.listen(config.webserver.port,()=>{

@@ -45,6 +45,6 @@ setTimeout(()=>{
 
       successVerif()
       document.cookie = `43616368652E5665726966696564=y+${Math.floor(Date.now()).toString(16)}; expires=${new Date(new Date().setFullYear(9999)).toUTCString()}; path=/`;
-},500)
+},1500)
     
 

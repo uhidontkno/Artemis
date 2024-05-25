@@ -15,6 +15,7 @@ export function startVerification(id:number) {
  let token = ((id+Date.now())*(8.44*Math.random())).toString(36).replaceAll(".","");
  let db = dbopen("db.sql",true);
  dbwrite(db,"verification_tokens",token,id.toString())
+ return token
 }
 export function endVerification(token:string) {
     let db = dbopen("db.sql",true);
