@@ -4,7 +4,7 @@ import staticPlugin from "@elysiajs/static";
 
 import logger from "../components/logger"
 import config from "./config"
-import { isVPN, startVerification } from "../components/helper";
+import { endVerification, isVPN, startVerification } from "../components/helper";
 
 import { nocache } from 'elysia-nocache';
 import { compression } from 'elysia-compression'
@@ -51,7 +51,20 @@ app.get("/api/ip",( { ip } )=>{
 app.get("/api/isvpn/:ip",( { params } )=>{
     return isVPN(params.ip)
 })
+app.get("/api/verify/serverside/:code",async ( { params,ip } )=>{
+    let db = dbopen("db.sql")
+    if (dbread(db,"verification_tokens",params.code) == null) {
+    return `failed;${params.code};Verification code does not exist.;`;
+    }
+    let vpn:boolean = await isVPN(ip)
+    if (vpn) {
+        endVerification(params.code)
+        return `failed;${params.code};Please turn off your VPN.;`;
+    }
+    
+})
 
+// will be replaced by discord bot soon
 app.get("/verify/start",( { })=>{
     return startVerification(1233456654323456)
 })
