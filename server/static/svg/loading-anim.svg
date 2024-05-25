@@ -1,7 +1,37 @@
-<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="rgba(255,255,255,0.8)"  stroke="black"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-moon-stars">
-<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
-<path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" />
-<path d="M19 11h2m-1 -1v2" />
-</svg>
-
+<!DOCTYPE html>
+<html lang="en">
+   <body>
+      <svg  xmlns="http://www.w3.org/2000/svg"  width="256"  height="256"  viewBox="0 0 24 24"  fill="rgba(255,255,255,0.8)"  stroke="black"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-moon-stars">
+         <defs>
+            <style>
+               @keyframes moon {
+               0% {opacity:1;fill:rgba(0,0,0,0.0)}
+               50% {opacity:0.8;fill:rgba(0,0,0,0.2)}
+               100% {opacity:1;fill:rgba(0,0,0,0.0)}
+               }
+               @keyframes bigstar {
+                0% {transform:rotate(0turn)}
+                100% {transform:rotate(1turn)}
+               }
+               #moon {animation:1s cubic-bezier(0.45, 0.05, 0.55, 0.95) moon infinite;
+               transform-origin: center;
+                transform-box: fill-box;
+               }
+               #small-star {
+                transform-origin: center;
+                transform-box: fill-box;
+                animation:1.5s cubic-bezier(0.65, 0.05, 0.36, 1) bigstar infinite;}
+            #big-star {
+                transform-origin: center;
+                transform-box: fill-box;
+                animation:1.5s cubic-bezier(0.18, 0.89, 0.04, 1.5) bigstar infinite;
+            }
+            </style>
+         </defs>
+         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+         <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" id="moon" />
+         <path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" id="big-star" />
+         <path d="M19 11h2m-1 -1v2" id="small-star" />
+      </svg>
+   </body>
+</html>
