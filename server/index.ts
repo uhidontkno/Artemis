@@ -45,8 +45,8 @@ app.get("/verify/:code/exists",( { params })=>{
     } else {return false}
     
 })
-app.get("/verify/:code/",()=>{
-    return Bun.file("static/verification.html")
+app.get("/verify/:code/",async ()=>{
+    return (Bun.file("server/static/verification.html"))
 })
 
 app.listen(config.webserver.port,()=>{
