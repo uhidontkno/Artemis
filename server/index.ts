@@ -31,6 +31,9 @@ app.get("/api/",()=>{return "Alive!"})
 app.get("/api/isvpn",( { ip } )=>{
     return isVPN(ip)
 })
+app.get("/api/ip",( { ip } )=>{
+    return ip
+})
 app.get("/api/isvpn/:ip",( { params } )=>{
     return isVPN(params.ip)
 })

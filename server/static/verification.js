@@ -41,12 +41,37 @@ setTimeout(async ()=>{
             failVerif("Invalid/expired verification code");return
         }
     }
-    setTimeout(()=>{
+    setTimeout(async ()=>{
     
+        // cookie check
         if (document.cookie.indexOf("43616368652E5665726966696564") != -1) {
             failVerif("You already verified");return
         }
-        
+
+        // user agent check
+        let ua = window.navigator.userAgent
+        if (
+            // we're on webkit
+            ((window.webkitCancelAnimationFrame !== undefined || Math.hypot(-24.42, -50.519999999999925) == 56.1124478168614) && (!ua.includes("Chrome/") || !ua.includes("AppleWebKit/"))) || 
+            // we're on gecko
+            ((window.webkitCancelAnimationFrame == undefined || Math.hypot(-24.42, -50.519999999999925) != 56.1124478168614) && (!ua.includes("Firefox/") || !ua.includes("Gecko/"))
+        )) {
+            failVerif("Your user agent seems to be spoofed.");return
+        }
+
+        // vpn check
+        let res = await fetch("/api/isvpn")
+        if (await res.text() == "true") {
+            failVerif("Please disable your VPN");return
+        }
+        // double check using an ip service
+        i = await fetch("https://ip.rare1k.workers.dev")
+        res = await fetch(`/api/isvpn/${await i.text()}`)
+        if (await res.text() == "true") {
+            failVerif("Please disable your VPN");return
+        }
+
+        // incognito check
         detectIncognito().then((result) => {
             if (result.isPrivate) {
                 failVerif("Incognito Mode detected")
@@ -55,7 +80,7 @@ setTimeout(async ()=>{
     
           successVerif()
           document.cookie = `43616368652E5665726966696564=y+${Math.floor(Date.now()).toString(16)}; expires=${new Date(new Date().setFullYear(9999)).toUTCString()}; path=/`;
-    },1000)
+    },750)
         
     
     
