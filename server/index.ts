@@ -33,6 +33,13 @@ app.use(nocache)
 app.use(compression())
 app.use(ip())
 
+app.get("detectincognito.min.js",async ({ set })=>{
+    set.headers = {
+        "Content-Type": "text/javascript"
+    }
+    return Bun.gunzipSync(await Bun.file("server/static/detectincognito.min.js.gz").arrayBuffer());
+})
+
 app.get("/api/",()=>{return "Alive!"})
 
 app.get("/api/isvpn",( { ip } )=>{
