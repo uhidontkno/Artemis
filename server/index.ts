@@ -21,11 +21,20 @@ import { dbopen, dbread,dbdroptable,dbmaketable,dbwrite } from "../components/sq
 const c = require("colors/safe")
 const app:Elysia = new Elysia()
 
-if (!(await (Bun.file("db.sql")).exists())) {
-    logger.warn("Database file (db.sql) does not exist.")
-    logger.info("Creating database file.")
-    Bun.write("db.sql","")
-}
+
+setTimeout(async ()=>{
+    if (!(await (Bun.file("db.sql")).exists())) {
+        logger.warn("Database file (db.sql) does not exist.")
+        logger.info("Creating database file...")
+        Bun.write("db.sql","")
+    }
+    if (!(await (Bun.file("signals.db.json")).exists())) {
+        logger.warn("Database file (signals.db.json) does not exist.")
+        logger.info("Creating database file...")
+        Bun.write("signals.db.json","{}")
+    }
+},33)
+
 
 if (!Number(process.env.BOT_OWNER)) {
     logger.error("Specify the bot owner User ID in your .env file!");process.exit(1);

@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "tailwindcss -i server/static/tw.css -o server/static/app.css -m -w",
-    "start": "echo \"bun run build & \" | bash && bash start.sh",
+    "start": "echo \"sleep 1 && bun run build & \" | bash && bash start.sh",
     "start:windows": "cmd /c \"bun run build\" && powershell start.ps1"
   },
   "peerDependencies": {
