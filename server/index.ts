@@ -82,8 +82,9 @@ app.get("/api/verify/serverside/:code/",async ( { params,ip } )=>{
     // @ts-expect-error
     let id = String(dbread(db,"verification_tokens",params.code).value);
     let iph = secureIPHash(ip,seed);
+    let u = (dbread(db,"users",id) || {"value":""})
     // @ts-expect-error
-    if ((dbread(db,"users",id) || {"value":""}).value != null || (dbread(db,"users",id) || {"value":""}).value != iph) {
+    if ((dbread(db,"users",id) || {"value":""}).value != null || .value != iph) {
         endVerification(params.code)
         return `failed;${params.code};You already verified on a different account, if you think this is a mistake please ask your server admin to manually verify you.;`;
         } else {
