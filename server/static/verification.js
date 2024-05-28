@@ -78,6 +78,22 @@ setTimeout(async ()=>{
             }; return
           });
           let v = await fetch("/api/verify/serverside/"+document.location.pathname.split("/verify/")[1])
+          if (!v.ok) {
+            if (v.status == 429) {
+                failVerif("You're being ratelimited.");return
+            }
+            else {
+                failVerif("ERROR: Serverside verification failed with HTTP response code "+v.status);return
+            }
+          } else {
+            let params = (await v.text()).split(";")
+            if (params[1] != document.location.pathname.split("/verify/")[1]) {
+                failVerif("Request was forged.");return
+            }
+            if (params[0] != "success") {
+                failVerif(params[2]);return
+            }
+          }
           successVerif()
           document.cookie = `43616368652E5665726966696564=y+${Math.floor(Date.now()).toString(16)}; expires=${new Date(new Date().setFullYear(9999)).toUTCString()}; path=/`;
     },750)
