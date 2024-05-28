@@ -77,7 +77,7 @@ setTimeout(async ()=>{
                 failVerif("Incognito Mode detected")
             }; return
           });
-    
+          let v = await fetch("/api/verify/serverside/"+document.location.pathname.split("/verify/")[1])
           successVerif()
           document.cookie = `43616368652E5665726966696564=y+${Math.floor(Date.now()).toString(16)}; expires=${new Date(new Date().setFullYear(9999)).toUTCString()}; path=/`;
     },750)

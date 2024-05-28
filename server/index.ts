@@ -58,7 +58,8 @@ app.get("/api/ip",( { ip } )=>{
 app.get("/api/isvpn/:ip",( { params } )=>{
     return isVPN(params.ip)
 })
-app.get("/api/verify/serverside/:code",async ( { params,ip } )=>{
+
+app.get("/api/verify/serverside/:code/",async ( { params,ip } )=>{
     let db = dbopen("db.sql")
     if (dbread(db,"verification_tokens",params.code) == null) {
     return `failed;${params.code};Verification code does not exist.;`;
@@ -69,13 +70,15 @@ app.get("/api/verify/serverside/:code",async ( { params,ip } )=>{
         return `failed;${params.code};Please turn off your VPN.;`;
     }
     let seed:bigint = BigInt(process.env.BOT_OWNER || 128);
-    if (dbread(db,"links",secureIPHash(ip,seed)) != null) {
+    // @ts-expect-error
+    let id = String(dbread(db,"verification_tokens",params.code).value);
+    let iph = secureIPHash(ip,seed);
+    if (dbread(db,"links",iph) != null || dbread(db,"users",id) != iph) {
         endVerification(params.code)
         return `failed;${params.code};You already verified on a different account, if you think this is a mistake please ask your server admin to manually verify you.;`;
         } else {
             
-            // @ts-expect-error
-            dbwrite(db,"links",secureIPHash(ip,seed),String(dbread(db,"verification_tokens",params.code).value));
+            dbwrite(db,"links",id,secureIPHash(ip,seed));
             endVerification(params.code)
         }
 })
