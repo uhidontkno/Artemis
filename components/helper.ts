@@ -21,3 +21,7 @@ export function endVerification(token:string) {
     let db = dbopen("db.sql",true);
     dbwrite(db,"verification_tokens",token,"")
 }
+
+export function secureIPHash(ip:string,seed:bigint): string {
+    return `${Bun.hash.cityHash64(ip,seed)}${Bun.hash.crc32(ip)}`
+}

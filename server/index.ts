@@ -4,12 +4,12 @@ import staticPlugin from "@elysiajs/static";
 
 import logger from "../components/logger"
 import config from "./config"
-import { endVerification, isVPN, startVerification } from "../components/helper";
+import { endVerification, isVPN, secureIPHash, startVerification } from "../components/helper";
 
 import { nocache } from 'elysia-nocache';
 import { compression } from 'elysia-compression'
 import { ip } from "elysia-ip";
-import { dbopen, dbread,dbdroptable,dbmaketable } from "../components/sqllite";
+import { dbopen, dbread,dbdroptable,dbmaketable,dbwrite } from "../components/sqllite";
 
 (()=>{
     let db = dbopen("db.sql")
@@ -25,6 +25,13 @@ if (!(await (Bun.file("db.sql")).exists())) {
     logger.warn("Database file (db.sql) does not exist.")
     logger.info("Creating database file.")
     Bun.write("db.sql","")
+}
+
+if (!Number(process.env.BOT_OWNER)) {
+    logger.error("Specify the bot owner User ID in your .env file!");process.exit(1);
+}
+if (!process.env.BOT_TOKEN) {
+    logger.error("Specify your bot's token in your .env file!");process.exit(1);
 }
 
 app.use(rateLimit(config.ratelimit))
@@ -61,7 +68,16 @@ app.get("/api/verify/serverside/:code",async ( { params,ip } )=>{
         endVerification(params.code)
         return `failed;${params.code};Please turn off your VPN.;`;
     }
-    
+    let seed:bigint = BigInt(process.env.BOT_OWNER || 128);
+    if (dbread(db,"links",secureIPHash(ip,seed)) != null) {
+        endVerification(params.code)
+        return `failed;${params.code};You already verified on a different account, if you think this is a mistake please ask your server admin to manually verify you.;`;
+        } else {
+            
+            // @ts-expect-error
+            dbwrite(db,"links",secureIPHash(ip,seed),String(dbread(db,"verification_tokens",params.code).value));
+            endVerification(params.code)
+        }
 })
 
 // will be replaced by discord bot soon
