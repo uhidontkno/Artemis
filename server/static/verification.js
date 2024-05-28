@@ -87,7 +87,7 @@ setTimeout(async ()=>{
             }
           } else {
             let params = (await v.text()).split(";")
-            if (params[1] != document.location.pathname.split("/verify/")[1]) {
+            if (params[1] != document.location.pathname.split("/verify/")[1].replaceAll("/","")) {
                 failVerif("Request was forged.");return
             }
             if (params[0] != "success") {

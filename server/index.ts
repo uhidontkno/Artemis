@@ -85,7 +85,7 @@ app.get("/api/verify/serverside/:code/",async ( { params,ip } )=>{
     let u = (dbread(db,"users",id) || {"value":""})
     let l = (dbread(db,"links",iph) || {"value":""})
     // @ts-expect-error
-    if (u.value != "" && (u.value != iph) && (l.value != id)) {
+    if (u.value != "" && l.value != "" && (u.value != iph || l.value != id)) {
         endVerification(params.code)
         return `failed;${params.code};You already verified on a different account, if you think this is a mistake please ask your server admin to manually verify you.;`;
         } else {
@@ -93,6 +93,7 @@ app.get("/api/verify/serverside/:code/",async ( { params,ip } )=>{
             dbwrite(db,"users",id,secureIPHash(ip,seed));
             dbwrite(db,"links",secureIPHash(ip,seed),id);
             endVerification(params.code)
+            return `success;${params.code};`
         }
 })
 

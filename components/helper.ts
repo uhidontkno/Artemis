@@ -1,6 +1,6 @@
 let ipr = require("ip-range-check")
 import logger from "../components/logger"
-import sqllite, { dbopen, dbwrite } from "../components/sqllite"
+import sqllite, { dbdelete, dbopen, dbwrite } from "../components/sqllite"
 
 export async function isVPN(ip:string): Promise<boolean> {
     let ranges = Bun.file("components/vpn_ips.txt")
@@ -19,7 +19,7 @@ export function startVerification(id:number) {
 }
 export function endVerification(token:string) {
     let db = dbopen("db.sql",true);
-    dbwrite(db,"verification_tokens",token,"")
+    dbdelete(db,"verification_tokens",token)
 }
 
 export function secureIPHash(ip:string,seed:bigint): string {
