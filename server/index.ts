@@ -69,27 +69,40 @@ app.get("/api/isvpn/:ip",( { params } )=>{
 })
 
 app.get("/api/verify/serverside/:code/",async ( { params,ip } )=>{
+    let signals = await (Bun.file("signals.db.json")).json()
     let db = dbopen("db.sql")
     if (dbread(db,"verification_tokens",params.code) == null) {
     return `failed;${params.code};Verification code does not exist.;`;
     }
+    // @ts-expect-error
+    let id = String(dbread(db,"verification_tokens",params.code).value);
     let vpn:boolean = await isVPN(ip)
     if (vpn) {
         endVerification(params.code)
+        if (signals["signals"][id]) {
+            signals["signals"][id] = "failed vpn"
+        }
+        await Bun.write("signals.db.json",signals)
         return `failed;${params.code};Please turn off your VPN.;`;
     }
     let seed:bigint = BigInt(process.env.BOT_OWNER || 128);
-    // @ts-expect-error
-    let id = String(dbread(db,"verification_tokens",params.code).value);
     let iph = secureIPHash(ip,seed);
     let u = (dbread(db,"users",id) || {"value":""})
     let l = (dbread(db,"links",iph) || {"value":""})
     // @ts-expect-error
-    if (u.value != "" && l.value != "" && (u.value != iph || l.value != id)) {
+    if ((u.value != iph || l.value != id)) {
         endVerification(params.code)
+        
+        if (signals["signals"][id]) {
+            signals["signals"][id] = "failed alt"
+        }
+        await Bun.write("signals.db.json",signals)
         return `failed;${params.code};You already verified on a different account, if you think this is a mistake please ask your server admin to manually verify you.;`;
         } else {
-            
+            if (signals["signals"][id]) {
+                signals["signals"][id] = "success"
+            }
+            await Bun.write("signals.db.json",signals)
             dbwrite(db,"users",id,secureIPHash(ip,seed));
             dbwrite(db,"links",secureIPHash(ip,seed),id);
             endVerification(params.code)
@@ -97,10 +110,13 @@ app.get("/api/verify/serverside/:code/",async ( { params,ip } )=>{
         }
 })
 
-// will be replaced by discord bot soon
-app.get("/verify/start",( { })=>{
-    return startVerification(1233456654323456)
-})
+//// only used for debugging purposes //////////
+//
+// app.get("/verify/start",( { })=>{
+//    return startVerification(Math.random())
+// })
+//
+///////////////////////////////////////////////
 app.get("/verify/:code/exists",( { params })=>{
     let db = dbopen("db.sql")
     if (dbread(db,"verification_tokens",params.code) != null) {
