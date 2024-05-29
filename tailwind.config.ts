@@ -4,9 +4,10 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require("@catppuccin/tailwindcss")({
-    prefix: "",
-    defaultFlavour: "mocha",
-  })],
-}
-
+  plugins: [
+    require("@catppuccin/tailwindcss")({
+      prefix: "",
+      defaultFlavour: "mocha",
+    }),
+  ],
+};
