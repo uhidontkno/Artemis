@@ -4,17 +4,18 @@ import { EmbedColors } from 'seyfert/lib/common';
 import { ButtonStyle, MessageFlags } from 'seyfert/lib/types';
 
 
-@Declare({
-  name: 'setup',
-  description: 'Setup this server with Atermis.'
-})
+
 @Options({
-    verifyRole: createRoleOption({
+    verifyrole: createRoleOption({
       description: 'Role to give users when they verify.',
       required: true
     })
 })
-export default class SetupCommand extends Command {
+@Declare({
+    name: 'setup',
+    description: 'Setup this server with Atermis.'
+})
+export default class SetupServerCommand extends Command {
 
   async run(ctx: CommandContext) {
     await ctx.deferReply();
@@ -37,7 +38,7 @@ export default class SetupCommand extends Command {
             }
             let em = new Embed({title:"Success",color:EmbedColors.Green,description:"Set configuration for this server."})
             // @ts-ignore
-            dbwrite(db,"config",(ctx.guildId || "-1"),btoa(JSON.stringify({"verifyRole":ctx.options.verifyRole})))
+            dbwrite(db,"config",(ctx.guildId || "-1"),btoa(JSON.stringify({"verifyRole":ctx.options.verifyrole})))
             await ctx.editOrReply({embeds: [em]})
         });
         collector.run('cancel', async (i:ButtonInteraction) => {
