@@ -36,9 +36,11 @@ export default class SetupServerCommand extends Command {
                 // @ts-expect-error
                 return i.write({content:"This is **not** your button.",flags:[MessageFlags.Ephemeral]})
             }
+            
+            
             let em = new Embed({title:"Success",color:EmbedColors.Green,description:"Set configuration for this server."})
             // @ts-ignore
-            dbwrite(db,"config",(ctx.guildId || "-1"),btoa(JSON.stringify({"verifyRole":ctx.options.verifyrole})))
+            dbwrite(db,"config",(ctx.guildId || "-1"),btoa(JSON.stringify({"verifyrole":ctx.options.verifyrole})))
             await ctx.editOrReply({embeds: [em],components:[]})
         });
         collector.run('cancel', async (i:ButtonInteraction) => {
@@ -53,9 +55,12 @@ export default class SetupServerCommand extends Command {
         
 
     } else {
+
         let em = new Embed({title:"Success",color:EmbedColors.Green,description:"Set configuration for this server."})
+        
+        
         // @ts-ignore
-        dbwrite(db,"config",(ctx.guildId || "-1"),btoa(JSON.stringify({"verifyRole":ctx.options.verifyRole})))
+        dbwrite(db,"config",(ctx.guildId || "-1"),btoa(JSON.stringify({"verifyrole":ctx.options.verifyrole})))
         await ctx.editOrReply({embeds: [em],components:[]})
     }
   }
