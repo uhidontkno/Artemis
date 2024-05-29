@@ -65,7 +65,7 @@ export function dbread(db: sqllite, table: string, name: string) {
   return result;
 }
 
-export function dbdelete(db: Database, table: string, name: string) {
+export function dbdelete(db: sqllite, table: string, name: string) {
   dbmaketable(db, table);
   const sql = `DELETE FROM ${table} WHERE name = ?`;
   const stmt = db.prepare(sql);
