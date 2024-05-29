@@ -39,7 +39,7 @@ export default class SetupServerCommand extends Command {
             let em = new Embed({title:"Success",color:EmbedColors.Green,description:"Set configuration for this server."})
             // @ts-ignore
             dbwrite(db,"config",(ctx.guildId || "-1"),btoa(JSON.stringify({"verifyRole":ctx.options.verifyrole})))
-            await ctx.editOrReply({embeds: [em]})
+            await ctx.editOrReply({embeds: [em],components:[]})
         });
         collector.run('cancel', async (i:ButtonInteraction) => {
             if (!i.isButton()) {return}
@@ -48,7 +48,7 @@ export default class SetupServerCommand extends Command {
                 return await i.write({content:"This is **not** your button.",flags:[MessageFlags.Ephemeral]})
             }
             // @ts-expect-error
-            await ctx.editOrReply({content:"Cancelled.",flags:[MessageFlags.Ephemeral]})
+            await ctx.editOrReply({content:"Cancelled.",flags:[MessageFlags.Ephemeral],embeds:[],components:[]})
         });
         
 
@@ -56,7 +56,7 @@ export default class SetupServerCommand extends Command {
         let em = new Embed({title:"Success",color:EmbedColors.Green,description:"Set configuration for this server."})
         // @ts-ignore
         dbwrite(db,"config",(ctx.guildId || "-1"),btoa(JSON.stringify({"verifyRole":ctx.options.verifyRole})))
-        await ctx.editOrReply({embeds: [em]})
+        await ctx.editOrReply({embeds: [em],components:[]})
     }
   }
 }
