@@ -1,9 +1,16 @@
-import { Declare, Command, type CommandContext } from 'seyfert';
+import { Declare, Command, type CommandContext, createUserOption,Options,Embed } from 'seyfert';
 import { MessageFlags } from 'seyfert/lib/types';
 import { dbopen,dbread } from '../../components/sqllite';
+import { EmbedColors } from 'seyfert/lib/common';
 @Declare({
   name: 'manualverify',
-  description: 'Show the ping with discord'
+  description: 'Manually verify a user'
+})
+@Options({
+    user: createUserOption({
+      description: 'User to manually verify.',
+      required: true
+    })
 })
 export default class ManualVerifyCommand extends Command {
 
@@ -18,5 +25,10 @@ export default class ManualVerifyCommand extends Command {
         await ctx.editOrReply({"content":"This server has not been setup yet. Please run the `/setup` command."})
         return;
     }
+    // @ts-expect-error
+    let roleId = JSON.parse(atob(dbread(db,"config",(ctx.guildId || "-1")).value)).verifyrole
+    await ctx.options.user.roles.add(roleId)
+    let em = new Embed({title:"Success",color:EmbedColors.Green,description:`Gave user <@${ctx.options.user.id}> (\`${ctx.options.user.username}\`) role <@&${roleId}>`})
+    ctx.editOrReply({ embeds:[em] })
   }
 }

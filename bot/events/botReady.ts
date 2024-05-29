@@ -11,7 +11,7 @@ export default createEvent({
       activities: [{
         name: "this server",
         type: ActivityType.Watching,
-        state: `and ${client.guilds.list.length - 1} other server(s) that support a FLOSS verification system.`,
+        state: `and ${client.guilds.list.length - 1} other server(s) that support FOSS.`,
       }],
       afk: false,
       since: Date.now(),
