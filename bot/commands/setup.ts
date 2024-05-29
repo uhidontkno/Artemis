@@ -2,7 +2,7 @@ import { Declare, Command, type CommandContext, Options, createRoleOption, Embed
 import { dbopen,dbwrite,dbread } from "../../components/sqllite"
 import { EmbedColors } from 'seyfert/lib/common';
 import { ButtonStyle, MessageFlags } from 'seyfert/lib/types';
-
+import { PermissionsBitField } from 'seyfert/lib/structures/extra/Permissions';
 
 
 @Options({
@@ -18,6 +18,11 @@ import { ButtonStyle, MessageFlags } from 'seyfert/lib/types';
 export default class SetupServerCommand extends Command {
 
   async run(ctx: CommandContext) {
+    
+    if (!ctx.member?.permissions.has(ctx.member?.permissions.Flags.Administrator)) {
+        await ctx.editOrReply({"content":"You need the `Administrator` permission to use this command.",flags:MessageFlags.Ephemeral})
+        return;
+    }
     await ctx.deferReply();
     let db = dbopen("db.sql")
     if (dbread(db,"config",(ctx.guildId || "-1"))) {
@@ -40,7 +45,7 @@ export default class SetupServerCommand extends Command {
             
             let em = new Embed({title:"Success",color:EmbedColors.Green,description:"Set configuration for this server."})
             // @ts-ignore
-            dbwrite(db,"config",(ctx.guildId || "-1"),btoa(JSON.stringify({"verifyrole":ctx.options.verifyrole})))
+            dbwrite(db,"config",(ctx.guildId || "-1"),btoa(JSON.stringify({"verifyrole":ctx.options.verifyrole.id})))
             await ctx.editOrReply({embeds: [em],components:[]})
         });
         collector.run('cancel', async (i:ButtonInteraction) => {
