@@ -63,10 +63,11 @@ export default class SetupServerCommand extends Command {
           return;
         }
         if (i.user.id != ctx.author.id) {
-          // @ts-expect-error
+          
           return i.write({
             content: "This is **not** your button.",
-            flags: [MessageFlags.Ephemeral],
+            
+            flags: MessageFlags.Ephemeral,
           });
         }
 
@@ -75,11 +76,12 @@ export default class SetupServerCommand extends Command {
           color: EmbedColors.Green,
           description: "Set configuration for this server.",
         });
-        // @ts-ignore
+        
         dbwrite(
           db,
           "config",
           ctx.guildId || "-1",
+          // @ts-expect-error
           btoa(JSON.stringify({ verifyrole: ctx.options.verifyrole.id })),
         );
         await ctx.editOrReply({ embeds: [em], components: [] });
@@ -89,16 +91,16 @@ export default class SetupServerCommand extends Command {
           return;
         }
         if (i.user.id != ctx.author.id) {
-          // @ts-expect-error
+          
           return await i.write({
             content: "This is **not** your button.",
-            flags: [MessageFlags.Ephemeral],
+            flags: MessageFlags.Ephemeral,
           });
         }
-        // @ts-expect-error
+        
         await ctx.editOrReply({
           content: "Cancelled.",
-          flags: [MessageFlags.Ephemeral],
+          flags: MessageFlags.Ephemeral,
           embeds: [],
           components: [],
         });
@@ -110,11 +112,11 @@ export default class SetupServerCommand extends Command {
         description: "Set configuration for this server.",
       });
 
-      // @ts-ignore
       dbwrite(
         db,
         "config",
         ctx.guildId || "-1",
+        // @ts-expect-error
         btoa(JSON.stringify({ verifyrole: ctx.options.verifyrole })),
       );
       await ctx.editOrReply({ embeds: [em], components: [] });

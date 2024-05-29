@@ -33,6 +33,7 @@ export default class ManualVerifyCommand extends Command {
       });
       return;
     }
+    // @ts-expect-error
     if (ctx.options.user.bot) {
       let em = new Embed({
         title: "Error",
@@ -55,10 +56,12 @@ export default class ManualVerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em] });
       return;
     }
-    // @ts-expect-error
+    
     let roleId = JSON.parse(
+      // @ts-expect-error
       atob(dbread(db, "config", ctx.guildId || "-1").value),
     ).verifyrole;
+    // @ts-expect-error
     if (ctx.options.user.roles.keys.includes(roleId)) {
       let em = new Embed({
         title: "Error",
@@ -68,10 +71,12 @@ export default class ManualVerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em] });
       return;
     }
+    // @ts-expect-error
     await ctx.options.user.roles.add(roleId);
     let em = new Embed({
       title: "Success",
       color: EmbedColors.Green,
+      // @ts-expect-error
       description: `Gave user <@${ctx.options.user.id}> (\`${ctx.options.user.username}\`) role <@&${roleId}>`,
     });
     ctx.editOrReply({ embeds: [em] });

@@ -74,17 +74,18 @@ app.get("detectincognito.min.js", async ({ set }) => {
 app.get("/api/", () => {
   return "Alive!";
 });
-
+// @ts-expect-error
 app.get("/api/isvpn", ({ ip }) => {
   return isVPN(ip);
 });
+// @ts-expect-error
 app.get("/api/ip", ({ ip }) => {
   return ip;
 });
 app.get("/api/isvpn/:ip", ({ params }) => {
   return isVPN(params.ip);
 });
-
+// @ts-expect-error
 app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   let signals = await Bun.file("signals.db.json").json();
   let db = dbopen("db.sql");
