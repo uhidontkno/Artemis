@@ -18,15 +18,17 @@ export async function isVPN(ip: string): Promise<boolean> {
   return ipr(ip, (await ranges.text()).split("\n"));
 }
 
-export async function startVerification(id: number) {
-  let token = ((id + Date.now()) * (8.44 * Math.random()))
+export async function startVerification(id: string) {
+  let token = ((BigInt(id) + BigInt(Date.now())) * BigInt(Math.floor(8.44 * Math.random())))
     .toString(36)
     .replaceAll(".", "");
   let db = dbopen("db.sql", true);
   dbwrite(db, "verification_tokens", token, id.toString());
-  let signals = await Bun.file("signals.db.json").json();
-  signals["signals"][id] = "started";
-  Bun.write("signals.db.json",signals)
+  let signals = await (Bun.file("signals.db.json")).json();
+  console.log(signals,id)
+  signals["signals"][String(id)] = "started";
+await Bun.write("signals.db.json",JSON.stringify(signals))
+
   return token;
 }
 export function endVerification(token: string) {

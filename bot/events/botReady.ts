@@ -6,7 +6,7 @@ export default createEvent({
   data: { once: true, name: "botReady" },
   run(user, client) {
     logger.info(
-      `${user.username}${user.username == "Atermis" ? "" : " (Artemis instance)"} is ready`,
+      `${user.username}${user.username == "Artemis" ? "" : " (Artemis instance)"} is ready`,
     );
     // @ts-ignore
     client.gateway.setPresence({

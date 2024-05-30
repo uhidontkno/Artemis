@@ -22,7 +22,7 @@ import { PermissionsBitField } from "seyfert/lib/structures/extra/Permissions";
 })
 @Declare({
   name: "setup",
-  description: "Setup this server with Atermis.",
+  description: "Setup this server with Artemis.",
 })
 export default class SetupServerCommand extends Command {
   async run(ctx: CommandContext) {

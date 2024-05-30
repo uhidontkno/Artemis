@@ -2,8 +2,8 @@ import { Declare, Command, type CommandContext, Embed,User,GuildMember } from "s
 import { EmbedColors } from "seyfert/lib/common";
 import { dbopen,dbread } from "../../components/sqllite";
 import { startVerification } from "../../components/helper";
-let c:string;
-let signal:string;
+var c:string = "";
+var signal:string;
 function waitSignal(interval: number, fn: () => string): Promise<string> {
   return new Promise((resolve, reject) => {
       const id = setInterval(() => {
@@ -57,9 +57,12 @@ export default class VerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em] });
       return;
     } else {
-      c = await startVerification(Number(user.id))
+      
+      c = await startVerification(ctx.author.id)
+      console.log(c)
       let fn = async () => {
-        signal = (await (Bun.file("signals.db.json")).json()).signals[c]
+        signal = (await (Bun.file("signals.db.json")).json())
+        signal = signal["signals"][c]
         if (signal != "started") {return signal}
       }
       let em = new Embed({
@@ -73,9 +76,11 @@ export default class VerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em] });
       
       await waitSignal(1000,fn);
-      let s = await Bun.file("signals.db.json").json();
-      s[c] = undefined;
-      Bun.write("signals.db.json",JSON.stringify(s))
+      signal =  (await Bun.file("signals.db.json").json())
+      signal = signal["signals"][ctx.author.id];
+      //let s = await Bun.file("signals.db.json").json();
+      //s[c] = undefined;
+      //Bun.write("signals.db.json",JSON.stringify(s))
       if (signal.startsWith("failed")) {
         let desc = ""
         switch (signal) {

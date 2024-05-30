@@ -38,12 +38,12 @@ setTimeout(async () => {
   if (!(await Bun.file("db.sql").exists())) {
     logger.warn("Database file (db.sql) does not exist.");
     logger.info("Creating database file...");
-    Bun.write("db.sql", "");
+  await Bun.write("db.sql", "");
   }
   if (!(await Bun.file("signals.db.json").exists())) {
     logger.warn("Database file (signals.db.json) does not exist.");
     logger.info("Creating database file...");
-    Bun.write("signals.db.json", `{"signals":[]}`);
+  await Bun.write("signals.db.json", `{"signals":[]}`);
   }
 }, 33);
 
@@ -97,8 +97,8 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   let vpn: boolean = await isVPN(ip);
   if (vpn) {
     endVerification(params.code);
-    if (signals["signals"][id]) {
-      signals["signals"][id] = "failed vpn";
+    if (signals["signals"][String(id)]) {
+      signals["signals"][String(id)] = "failed vpn";
     }
     await Bun.write("signals.db.json", JSON.stringify(signals));
     return `failed;${params.code};Please turn off your VPN.;`;
@@ -107,18 +107,19 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   let iph = secureIPHash(ip, seed);
   let u = dbread(db, "users", id) || { value: "" };
   let l = dbread(db, "links", iph) || { value: "" };
+  console.log(u.value,iph,l.value,id)
   // @ts-expect-error
-  if (u.value != iph || l.value != id) {
+  if (u.value && l.value && (u.value != iph || l.value != id)) {
     endVerification(params.code);
 
-    if (signals["signals"][id]) {
-      signals["signals"][id] = "failed alt";
+    if (signals["signals"][String(id)]) {
+      signals["signals"][String(id)] = "failed alt";
     }
     await Bun.write("signals.db.json", JSON.stringify(signals));
     return `failed;${params.code};You already verified on a different account, if you think this is a mistake please ask your server admin to manually verify you.;`;
   } else {
-    if (signals["signals"][id]) {
-      signals["signals"][id] = "success";
+    if (signals["signals"][String(id)]) {
+      signals["signals"][String(id)] = "success";
     }
     await Bun.write("signals.db.json", JSON.stringify(signals));
     dbwrite(db, "users", id, secureIPHash(ip, seed));
