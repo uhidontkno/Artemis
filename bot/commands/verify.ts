@@ -4,12 +4,13 @@ import { dbopen,dbread } from "../../components/sqllite";
 import { startVerification } from "../../components/helper";
 var c:string = "";
 var signal:string;
-function waitSignal(interval: number, fn: () => string): Promise<string> {
+function waitSignal(interval: number, fn: () => Promise<string>): Promise<string> {
   return new Promise((resolve, reject) => {
-      const id = setInterval(() => {
+      const id = setInterval(async () => {
           try {
-              let _ = fn()
-              if (_) {
+              let _ = await fn()
+              console.log(_)
+              if (_ != "started") {
                   clearInterval(id);
                   resolve(_);
 
@@ -59,11 +60,13 @@ export default class VerifyCommand extends Command {
     } else {
       
       c = await startVerification(ctx.author.id)
-      console.log(c)
+      
       let fn = async () => {
+        
         signal = (await (Bun.file("signals.db.json")).json())
         signal = signal["signals"][c]
-        if (signal != "started") {return signal}
+        console.log(c,signal)
+        return signal
       }
       let em = new Embed({
         title: "",
@@ -77,7 +80,7 @@ export default class VerifyCommand extends Command {
       
       await waitSignal(1000,fn);
       signal =  (await Bun.file("signals.db.json").json())
-      signal = signal["signals"][ctx.author.id];
+      signal = signal["signals"][c];
       //let s = await Bun.file("signals.db.json").json();
       //s[c] = undefined;
       //Bun.write("signals.db.json",JSON.stringify(s))
