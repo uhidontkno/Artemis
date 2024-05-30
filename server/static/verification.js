@@ -18,6 +18,7 @@ function failVerif(reason,serverside = false) {
   document.title = "Verification Failed | Artemis";
   (async () => {
     if (!serverside) {
+      if (reason == "Please turn off your VPN." || reason == "Please disable your VPN.") {reason = "because you're using a VPN"}
     await fetch(`/verify/${reason}/manualfail`,{
       method:"POST",
       body:reason
