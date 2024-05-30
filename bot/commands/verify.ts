@@ -9,7 +9,7 @@ function waitSignal(interval: number, fn: () => Promise<string>): Promise<string
       const id = setInterval(async () => {
           try {
               let _ = await fn()
-              console.log(_)
+              
               if (_ != "started") {
                   clearInterval(id);
                   resolve(_);
@@ -65,7 +65,6 @@ export default class VerifyCommand extends Command {
         
         signal = (await (Bun.file("signals.db.json")).json())
         signal = signal["signals"][c]
-        console.log(c,signal)
         return signal
       }
       let em = new Embed({

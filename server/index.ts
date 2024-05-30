@@ -85,6 +85,21 @@ app.get("/api/ip", ({ ip }) => {
 app.get("/api/isvpn/:ip", ({ params }) => {
   return isVPN(params.ip);
 });
+
+app.post("/verify/:code/manualfail", async ({ params,body }) => {
+  let signals = await Bun.file("signals.db.json").json();
+  let db = dbopen("db.sql");
+  if (dbread(db, "verification_tokens", params.code) == null) {
+    return `Verification code does not exist.;`;
+  }
+  if (signals["signals"][String(params.code)]) {
+    signals["signals"][String(params.code)] = `failed override;${body}`;
+  }
+  await Bun.write("signals.db.json", JSON.stringify(signals));
+  return "success"
+}
+)
+
 // @ts-expect-error
 app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   let signals = await Bun.file("signals.db.json").json();
@@ -97,8 +112,8 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   let vpn: boolean = await isVPN(ip);
   if (vpn) {
     endVerification(params.code);
-    if (signals["signals"][String(id)]) {
-      signals["signals"][String(id)] = "failed vpn";
+    if (signals["signals"][String(params.code)]) {
+      signals["signals"][String(params.code)] = "failed vpn";
     }
     await Bun.write("signals.db.json", JSON.stringify(signals));
     return `failed;${params.code};Please turn off your VPN.;`;
