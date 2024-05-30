@@ -71,7 +71,11 @@ export default class VerifyCommand extends Command {
       em.addFields({name:"Status",value:"Waiting for verification..."})
       em.setFooter({"text":"Powered by Artemis | A FOSS Double Counter alternative."})
       await ctx.editOrReply({ embeds: [em] });
-      await waitSignal(1000,fn)
+      
+      await waitSignal(1000,fn);
+      let s = await Bun.file("signals.db.json").json();
+      s[c] = undefined;
+      Bun.write("signals.db.json",s)
       if (signal.startsWith("failed")) {
         let desc = ""
         switch (signal) {
