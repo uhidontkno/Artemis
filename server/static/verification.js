@@ -1,4 +1,4 @@
-function failVerif(reason) {
+function failVerif(reason,serverside = false) {
   let s = document.querySelector("object").contentDocument;
   s.querySelector("#big-star").style.animation = "none";
   s.querySelector("#small-star").style.animation = "none";
@@ -16,8 +16,15 @@ function failVerif(reason) {
   }, 100);
   document.querySelector("h1").innerText = reason;
   document.title = "Verification Failed | Artemis";
+  (async () => {
+    if (!serverside) {
+    await fetch(`/verify/${reason}/manualfail`,{
+      method:"POST",
+      body:reason
+    })
+  }
+  })();
 
-  
 }
 
 function successVerif() {
@@ -40,22 +47,16 @@ function successVerif() {
 }
 setTimeout(async () => {
   if (document.location.pathname == "/verification.html") {
-    failVerif("Invalid path.");
+    failVerif("Invalid path.",true);
     return;
   } else {
     let res = await fetch(document.location.pathname + "exists");
     if ((await res.text()) == "false") {
-      failVerif("Invalid/expired verification code");
+      failVerif("Invalid/expired verification code",true);
       return;
     }
   }
   setTimeout(async () => {
-    // cookie check
-    if (document.cookie.indexOf("43616368652E5665726966696564") != -1) {
-      failVerif("You already verified");
-      return;
-    }
-
     // user agent check
     let ua = window.navigator.userAgent;
     if (
@@ -99,12 +100,12 @@ setTimeout(async () => {
     );
     if (!v.ok) {
       if (v.status == 429) {
-        failVerif("You're being ratelimited.");
+        failVerif("You're being ratelimited.",true);
         return;
       } else {
         failVerif(
           "ERROR: Serverside verification failed with HTTP response code " +
-            v.status,
+            v.status, true
         );
         return;
       }
@@ -118,7 +119,7 @@ setTimeout(async () => {
         return;
       }
       if (params[0] != "success") {
-        failVerif(params[2]);
+        failVerif(params[2],true);
         return;
       }
     }
