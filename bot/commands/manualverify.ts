@@ -56,7 +56,7 @@ export default class ManualVerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em] });
       return;
     }
-    
+
     let roleId = JSON.parse(
       // @ts-expect-error
       atob(dbread(db, "config", ctx.guildId || "-1").value),

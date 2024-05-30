@@ -63,10 +63,9 @@ export default class SetupServerCommand extends Command {
           return;
         }
         if (i.user.id != ctx.author.id) {
-          
           return i.write({
             content: "This is **not** your button.",
-            
+
             flags: MessageFlags.Ephemeral,
           });
         }
@@ -76,7 +75,7 @@ export default class SetupServerCommand extends Command {
           color: EmbedColors.Green,
           description: "Set configuration for this server.",
         });
-        
+
         dbwrite(
           db,
           "config",
@@ -91,13 +90,12 @@ export default class SetupServerCommand extends Command {
           return;
         }
         if (i.user.id != ctx.author.id) {
-          
           return await i.write({
             content: "This is **not** your button.",
             flags: MessageFlags.Ephemeral,
           });
         }
-        
+
         await ctx.editOrReply({
           content: "Cancelled.",
           flags: MessageFlags.Ephemeral,

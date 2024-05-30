@@ -38,12 +38,12 @@ setTimeout(async () => {
   if (!(await Bun.file("db.sql").exists())) {
     logger.warn("Database file (db.sql) does not exist.");
     logger.info("Creating database file...");
-  await Bun.write("db.sql", "");
+    await Bun.write("db.sql", "");
   }
   if (!(await Bun.file("signals.db.json").exists())) {
     logger.warn("Database file (signals.db.json) does not exist.");
     logger.info("Creating database file...");
-  await Bun.write("signals.db.json", `{"signals":[]}`);
+    await Bun.write("signals.db.json", `{"signals":[]}`);
   }
 }, 33);
 
@@ -86,7 +86,7 @@ app.get("/api/isvpn/:ip", ({ params }) => {
   return isVPN(params.ip);
 });
 
-app.post("/verify/:code/manualfail", async ({ params,body }) => {
+app.post("/verify/:code/manualfail", async ({ params, body }) => {
   let signals = await Bun.file("signals.db.json").json();
   let db = dbopen("db.sql");
   if (dbread(db, "verification_tokens", params.code) == null) {
@@ -96,9 +96,8 @@ app.post("/verify/:code/manualfail", async ({ params,body }) => {
     signals["signals"][String(params.code)] = `failed override;${body}`;
   }
   await Bun.write("signals.db.json", JSON.stringify(signals));
-  return "success"
-}
-)
+  return "success";
+});
 
 // @ts-expect-error
 app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
@@ -122,7 +121,7 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   let iph = secureIPHash(ip, seed);
   let u = dbread(db, "users", id) || { value: "" };
   let l = dbread(db, "links", iph) || { value: "" };
-  console.log(u.value,iph,l.value,id)
+  console.log(u.value, iph, l.value, id);
   // @ts-expect-error
   if (u.value && l.value && (u.value != iph || l.value != id)) {
     endVerification(params.code);

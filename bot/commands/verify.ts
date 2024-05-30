@@ -1,25 +1,34 @@
-import { Declare, Command, type CommandContext, Embed,User,GuildMember } from "seyfert";
+import {
+  Declare,
+  Command,
+  type CommandContext,
+  Embed,
+  User,
+  GuildMember,
+} from "seyfert";
 import { EmbedColors } from "seyfert/lib/common";
-import { dbopen,dbread } from "../../components/sqllite";
+import { dbopen, dbread } from "../../components/sqllite";
 import { startVerification } from "../../components/helper";
-var c:string = "";
-var signal:string;
-function waitSignal(interval: number, fn: () => Promise<string>): Promise<string> {
+var c: string = "";
+var signal: string;
+function waitSignal(
+  interval: number,
+  fn: () => Promise<string>,
+): Promise<string> {
   return new Promise((resolve, reject) => {
-      const id = setInterval(async () => {
-          try {
-              let _ = await fn()
-              
-              if (_ != "started") {
-                  clearInterval(id);
-                  resolve(_);
+    const id = setInterval(async () => {
+      try {
+        let _ = await fn();
 
-              }
-          } catch (error) {
-              clearInterval(id);
-              reject(error);
-          }
-      }, interval);
+        if (_ != "started") {
+          clearInterval(id);
+          resolve(_);
+        }
+      } catch (error) {
+        clearInterval(id);
+        reject(error);
+      }
+    }, interval);
   });
 }
 
@@ -28,9 +37,7 @@ function waitSignal(interval: number, fn: () => Promise<string>): Promise<string
   description: "Verify yourself",
 })
 export default class VerifyCommand extends Command {
-  
   async run(ctx: CommandContext) {
-    
     await ctx.deferReply(true);
     let db = dbopen("db.sql");
     if (!dbread(db, "config", ctx.guildId || "-1")) {
@@ -43,12 +50,12 @@ export default class VerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em] });
       return;
     }
-    
+
     let roleId = JSON.parse(
       // @ts-expect-error
       atob(dbread(db, "config", ctx.guildId || "-1").value),
     ).verifyrole;
-    let user = ctx.member
+    let user = ctx.member;
     if (user.roles.keys.includes(roleId)) {
       let em = new Embed({
         title: "Error",
@@ -58,57 +65,60 @@ export default class VerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em] });
       return;
     } else {
-      
-      c = await startVerification(ctx.author.id)
-      
+      c = await startVerification(ctx.author.id);
+
       let fn = async () => {
-        
-        signal = (await (Bun.file("signals.db.json")).json())
-        signal = signal["signals"][c]
-        return signal
-      }
+        signal = await Bun.file("signals.db.json").json();
+        signal = signal["signals"][c];
+        return signal;
+      };
       let em = new Embed({
         title: "",
         color: EmbedColors.Blue,
         description: `Please click the below link to start verification. Don't worry, this is 100% automatic.\n${process.env["DEPLOYMENT_URL"]}/verify/${c}/`,
-        
       });
-      em.addFields({name:"Status",value:"Waiting for verification..."})
-      em.setFooter({"text":"Powered by Artemis | A FOSS Double Counter alternative."})
+      em.addFields({ name: "Status", value: "Waiting for verification..." });
+      em.setFooter({
+        text: "Powered by Artemis | A FOSS Double Counter alternative.",
+      });
       await ctx.editOrReply({ embeds: [em] });
-      
-      await waitSignal(1000,fn);
-      signal =  (await Bun.file("signals.db.json").json())
+
+      await waitSignal(1000, fn);
+      signal = await Bun.file("signals.db.json").json();
       signal = signal["signals"][c];
       //let s = await Bun.file("signals.db.json").json();
       //s[c] = undefined;
       //Bun.write("signals.db.json",JSON.stringify(s))
       if (signal.startsWith("failed")) {
-        let desc = ""
+        let desc = "";
         switch (signal) {
           case "failed alt":
-            desc="we've detected that you're on an alt account";break;
+            desc = "we've detected that you're on an alt account";
+            break;
           case "failed vpn":
-            desc="we detect that you're on a VPN or a proxy.";break;
+            desc = "we detect that you're on a VPN or a proxy.";
+            break;
           default:
-            desc="we don't know"
+            desc = "we don't know";
         }
         let em = new Embed({
           title: "Verification was unsuccessful.",
           color: EmbedColors.Red,
           description: `You have failed verification because ${desc}`,
-          
         });
-        em.setFooter({"text":"Powered by Artemis | A FOSS Double Counter alternative."});
+        em.setFooter({
+          text: "Powered by Artemis | A FOSS Double Counter alternative.",
+        });
         await ctx.editOrReply({ embeds: [em] });
       } else {
         let em = new Embed({
           title: "Verification was successful!",
           color: EmbedColors.Green,
-          description:""
-          
+          description: "",
         });
-        em.setFooter({"text":"Powered by Artemis | A FOSS Double Counter alternative."});
+        em.setFooter({
+          text: "Powered by Artemis | A FOSS Double Counter alternative.",
+        });
         await ctx.editOrReply({ embeds: [em] });
         await user.roles.add(roleId);
       }
