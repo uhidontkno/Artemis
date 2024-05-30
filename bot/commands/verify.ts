@@ -75,7 +75,7 @@ export default class VerifyCommand extends Command {
       await waitSignal(1000,fn);
       let s = await Bun.file("signals.db.json").json();
       s[c] = undefined;
-      Bun.write("signals.db.json",s)
+      Bun.write("signals.db.json",JSON.stringify(s))
       if (signal.startsWith("failed")) {
         let desc = ""
         switch (signal) {
