@@ -117,7 +117,7 @@ export default class SetupServerCommand extends Command {
         "config",
         ctx.guildId || "-1",
         // @ts-expect-error
-        btoa(JSON.stringify({ verifyrole: ctx.options.verifyrole })),
+        btoa(JSON.stringify({ verifyrole: ctx.options.verifyrole.id })),
       );
       await ctx.editOrReply({ embeds: [em], components: [] });
     }
