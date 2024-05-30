@@ -112,14 +112,14 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   if (u.value && l.value && (u.value != iph || l.value != id)) {
     endVerification(params.code);
 
-    if (signals["signals"][String(id)]) {
-      signals["signals"][String(id)] = "failed alt";
+    if (signals["signals"][String(params.code)]) {
+      signals["signals"][String(params.code)] = "failed alt";
     }
     await Bun.write("signals.db.json", JSON.stringify(signals));
     return `failed;${params.code};You already verified on a different account, if you think this is a mistake please ask your server admin to manually verify you.;`;
   } else {
-    if (signals["signals"][String(id)]) {
-      signals["signals"][String(id)] = "success";
+    if (signals["signals"][String(params.code)]) {
+      signals["signals"][String(params.code)] = "success";
     }
     await Bun.write("signals.db.json", JSON.stringify(signals));
     dbwrite(db, "users", id, secureIPHash(ip, seed));
