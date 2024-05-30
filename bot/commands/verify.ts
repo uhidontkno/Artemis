@@ -8,7 +8,7 @@ import {
 } from "seyfert";
 import { EmbedColors } from "seyfert/lib/common";
 import { dbopen, dbread } from "../../components/sqllite";
-import { startVerification } from "../../components/helper";
+import { endVerification, startVerification } from "../../components/helper";
 var c: string = "";
 var signal: string;
 function waitSignal(
@@ -90,13 +90,17 @@ export default class VerifyCommand extends Command {
       //s[c] = undefined;
       //Bun.write("signals.db.json",JSON.stringify(s))
       if (signal.startsWith("failed")) {
+        endVerification(c)
         let desc = "";
-        switch (signal) {
+        switch (signal.split(";")[0]) {
           case "failed alt":
             desc = "we've detected that you're on an alt account";
             break;
           case "failed vpn":
             desc = "we detect that you're on a VPN or a proxy.";
+            break;
+          case "failed override":
+            desc = signal.split(";")[1]
             break;
           default:
             desc = "we don't know";
@@ -121,6 +125,7 @@ export default class VerifyCommand extends Command {
         });
         await ctx.editOrReply({ embeds: [em] });
         await user.roles.add(roleId);
+        endVerification(c)
       }
     }
   }

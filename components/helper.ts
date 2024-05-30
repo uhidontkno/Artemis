@@ -33,9 +33,12 @@ export async function startVerification(id: string) {
 
   return token;
 }
-export function endVerification(token: string) {
+export async function endVerification(token: string) {
   let db = dbopen("db.sql", true);
   dbdelete(db, "verification_tokens", token);
+  let signals = await Bun.file("signals.db.json").json();
+  signals["signals"][String(token)] = undefined;
+  await Bun.write("signals.db.json", JSON.stringify(signals));
 }
 
 export function secureIPHash(ip: string, seed: bigint): string {

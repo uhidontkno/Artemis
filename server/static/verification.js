@@ -16,6 +16,8 @@ function failVerif(reason) {
   }, 100);
   document.querySelector("h1").innerText = reason;
   document.title = "Verification Failed | Artemis";
+
+  
 }
 
 function successVerif() {
