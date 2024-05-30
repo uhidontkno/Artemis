@@ -43,7 +43,7 @@ setTimeout(async () => {
   if (!(await Bun.file("signals.db.json").exists())) {
     logger.warn("Database file (signals.db.json) does not exist.");
     logger.info("Creating database file...");
-    await Bun.write("signals.db.json", `{"signals":[]}`);
+    await Bun.write("signals.db.json", `{"signals":{}}`);
   }
 }, 33);
 
