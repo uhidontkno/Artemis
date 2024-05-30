@@ -19,7 +19,7 @@ function failVerif(reason,serverside = false) {
   (async () => {
     if (!serverside) {
       if (reason == "Please turn off your VPN." || reason == "Please disable your VPN") {reason = "because you're using a VPN"}
-    await fetch(`/verify/${reason}/manualfail`,{
+    await fetch(`/verify/${document.location.pathname.split("/verify/")[1]}/manualfail`,{
       method:"POST",
       body:reason
     })
