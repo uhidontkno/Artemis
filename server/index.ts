@@ -100,7 +100,7 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
     if (signals["signals"][id]) {
       signals["signals"][id] = "failed vpn";
     }
-    await Bun.write("signals.db.json", signals);
+    await Bun.write("signals.db.json", JSON.stringify(signals));
     return `failed;${params.code};Please turn off your VPN.;`;
   }
   let seed: bigint = BigInt(process.env.BOT_OWNER || 128);
@@ -114,13 +114,13 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
     if (signals["signals"][id]) {
       signals["signals"][id] = "failed alt";
     }
-    await Bun.write("signals.db.json", signals);
+    await Bun.write("signals.db.json", JSON.stringify(signals));
     return `failed;${params.code};You already verified on a different account, if you think this is a mistake please ask your server admin to manually verify you.;`;
   } else {
     if (signals["signals"][id]) {
       signals["signals"][id] = "success";
     }
-    await Bun.write("signals.db.json", signals);
+    await Bun.write("signals.db.json", JSON.stringify(signals));
     dbwrite(db, "users", id, secureIPHash(ip, seed));
     dbwrite(db, "links", secureIPHash(ip, seed), id);
     endVerification(params.code);

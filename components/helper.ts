@@ -26,7 +26,7 @@ export async function startVerification(id: number) {
   dbwrite(db, "verification_tokens", token, id.toString());
   let signals = await Bun.file("signals.db.json").json();
   signals["signals"][id] = "started";
-
+  
   return token;
 }
 export function endVerification(token: string) {

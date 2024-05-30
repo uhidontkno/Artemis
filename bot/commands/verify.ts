@@ -27,6 +27,7 @@ function waitSignal(interval: number, fn: () => string): Promise<string> {
   description: "Verify yourself",
 })
 export default class VerifyCommand extends Command {
+  
   async run(ctx: CommandContext) {
     
     await ctx.deferReply(true);
