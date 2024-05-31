@@ -132,7 +132,7 @@ export default class VerifyCommand extends Command {
           case "nothing":
             break;
           case "kick":
-            log = log + `\n* User scheduled to get kicked <t:${Date.now() + 15}:R>`
+            log = log + `\n* User scheduled to get kicked <t:${Math.floor(Date.now()/1000) + 15}:R>`
             punishmentString =
               ". Additionally, you will be kicked from this server in 15 seconds.";
             setTimeout(async () => {
@@ -151,7 +151,7 @@ export default class VerifyCommand extends Command {
             }, 15000);
             break;
           case "mute.15":
-            log = log + `\n* User got muted <t:${Date.now()}:R>`
+            log = log + `\n* User got muted <t:${Math.floor(Date.now()/1000)}:R>`
             if (await ctx.member?.moderatable()) {
               // do not attempt to mute if cannot
               punishmentString =
@@ -174,7 +174,7 @@ export default class VerifyCommand extends Command {
             }
             break;
           case "mute.60":
-            log = log + `\n* User got muted <t:${Date.now()}:R>`
+            log = log + `\n* User got muted <t:${Math.floor(Date.now()/1000)}:R>`
             punishmentString = ". Additionally, you will be muted for 1 hour.";
             if (await ctx.member?.moderatable()) {
               // do not attempt to mute if cannot
@@ -196,7 +196,7 @@ export default class VerifyCommand extends Command {
             }
             break;
           case "mute.180":
-            log = log + `\n* User got muted <t:${Date.now()}:R>`
+            log = log + `\n* User got muted <t:${Math.floor(Date.now()/1000)}:R>`
             punishmentString = ". Additionally, you will be muted for 3 hours.";
             if (await ctx.member?.moderatable()) {
               // do not attempt to mute if cannot
@@ -218,7 +218,7 @@ export default class VerifyCommand extends Command {
             }
             break;
           case "ban":
-            log = log + `\n* User scheduled to get BANNED <t:${Date.now() + 15}:R>`
+            log = log + `\n* User scheduled to get BANNED <t:${Math.floor(Date.now()/1000) + 15}:R>`
             punishmentString =
               ". Additionally, you will be banned from this server in 15 seconds.";
             if (await ctx.member?.bannable()) {
