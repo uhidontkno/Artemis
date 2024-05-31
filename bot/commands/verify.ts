@@ -151,7 +151,7 @@ export default class VerifyCommand extends Command {
                   },
                   "Muted by Artemis: User failed to verify. Use /setup to change this behavior.",
                 );
-              }, 3000);
+              }, 1000);
             } else {
               punishmentString =
                 punishmentString +
@@ -171,7 +171,7 @@ export default class VerifyCommand extends Command {
                   },
                   "Muted by Artemis: User failed to verify. Use /setup to change this behavior.",
                 );
-              }, 3000);
+              }, 1000);
             } else {
               punishmentString =
                 punishmentString +
@@ -191,7 +191,7 @@ export default class VerifyCommand extends Command {
                   },
                   "Muted by Artemis: User failed to verify. Use /setup to change this behavior.",
                 );
-              }, 3000);
+              }, 1000);
             } else {
               punishmentString =
                 punishmentString +
