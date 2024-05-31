@@ -1,13 +1,23 @@
-function failVerif(reason,serverside = false) {
+function failVerif(reason, serverside = false) {
   (async () => {
     if (!serverside) {
-      if (reason == "Please turn off your VPN." || reason == "Please disable your VPN") {reason = "because you're using a VPN"}
-      if (reason == "Incognito Mode detected") {reason = "because you are on Incognito Mode"}
-    await fetch(`/verify/${document.location.pathname.split("/verify/")[1]}manualfail`,{
-      method:"POST",
-      body:reason
-    })
-  }
+      if (
+        reason == "Please turn off your VPN." ||
+        reason == "Please disable your VPN"
+      ) {
+        reason = "because you're using a VPN";
+      }
+      if (reason == "Incognito Mode detected") {
+        reason = "because you are on Incognito Mode";
+      }
+      await fetch(
+        `/verify/${document.location.pathname.split("/verify/")[1]}manualfail`,
+        {
+          method: "POST",
+          body: reason,
+        },
+      );
+    }
   })();
   let s = document.querySelector("object").contentDocument;
   s.querySelector("#big-star").style.animation = "none";
@@ -48,12 +58,12 @@ function successVerif() {
 }
 setTimeout(async () => {
   if (document.location.pathname == "/verification.html") {
-    failVerif("Invalid path.",true);
+    failVerif("Invalid path.", true);
     return;
   } else {
     let res = await fetch(document.location.pathname + "exists");
     if ((await res.text()) == "false") {
-      failVerif("Invalid/expired verification code",true);
+      failVerif("Invalid/expired verification code", true);
       return;
     }
   }
@@ -101,12 +111,13 @@ setTimeout(async () => {
     );
     if (!v.ok) {
       if (v.status == 429) {
-        failVerif("You're being ratelimited.",true);
+        failVerif("You're being ratelimited.", true);
         return;
       } else {
         failVerif(
           "ERROR: Serverside verification failed with HTTP response code " +
-            v.status, true
+            v.status,
+          true,
         );
         return;
       }
@@ -120,7 +131,7 @@ setTimeout(async () => {
         return;
       }
       if (params[0] != "success") {
-        failVerif(params[2],true);
+        failVerif(params[2], true);
         return;
       }
     }

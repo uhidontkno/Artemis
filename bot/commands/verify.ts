@@ -42,8 +42,7 @@ export default class VerifyCommand extends Command {
       let em = new Embed({
         title: "Error",
         color: EmbedColors.Red,
-        description:
-          "Server owners and bots cannot use this command.",
+        description: "Server owners and bots cannot use this command.",
       });
       await ctx.editOrReply({ embeds: [em] });
       return;
@@ -62,9 +61,9 @@ export default class VerifyCommand extends Command {
     }
 
     let config = // @ts-expect-error
-    JSON.parse(atob(dbread(db, "config", ctx.guildId || "-1").value))
+      JSON.parse(atob(dbread(db, "config", ctx.guildId || "-1").value));
     let roleId = config.verifyrole;
-    let punishment = config.actiononfail
+    let punishment = config.actiononfail;
     let user = ctx.member;
     //@ts-expect-error
     if (user.roles.keys.includes(roleId)) {
@@ -103,7 +102,7 @@ export default class VerifyCommand extends Command {
       //s[c] = undefined;
       //Bun.write("signals.db.json",JSON.stringify(s))
       if (signal.startsWith("failed")) {
-        endVerification(c)
+        endVerification(c);
         let desc = "";
         switch (signal.split(";")[0]) {
           case "failed alt":
@@ -113,77 +112,111 @@ export default class VerifyCommand extends Command {
             desc = "we detect that you're on a VPN or a proxy.";
             break;
           case "failed override":
-            desc = signal.split(";")[1]
+            desc = signal.split(";")[1];
             break;
           default:
             desc = "we don't know";
         }
-        let punishmentString = ". "
+        let punishmentString = ". ";
         switch (punishment) {
           case "nothing":
-            break
+            break;
           case "kick":
-            punishmentString = ". Additionally, you will be kicked from this server in 15 seconds."
-            setTimeout(async ()=>{
-              if (await ctx.member?.kickable()) { // do not attempt to kick if cannot
-              await ctx.member?.kick("Kicked by Artemis: User failed to verify. Use /setup to change this behavior.");
+            punishmentString =
+              ". Additionally, you will be kicked from this server in 15 seconds.";
+            setTimeout(async () => {
+              if (await ctx.member?.kickable()) {
+                // do not attempt to kick if cannot
+                await ctx.member?.kick(
+                  "Kicked by Artemis: User failed to verify. Use /setup to change this behavior.",
+                );
               } else {
-                punishmentString = punishmentString + ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so."
+                punishmentString =
+                  punishmentString +
+                  ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so.";
               }
-            },15000)
-            break
+            }, 15000);
+            break;
           case "mute.15":
-            if (await ctx.member?.moderatable()) { // do not attempt to mute if cannot
-            punishmentString = ". Additionally, you will be muted for 15 minutes."
-            setTimeout(async ()=>{
-                await ctx.member?.edit({
-                  communication_disabled_until: String(Date.now() + ((15*60)*1000))
-                }, "Muted by Artemis: User failed to verify. Use /setup to change this behavior.")
-            },3000)
-          } else {
-            punishmentString = punishmentString + ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so."
-          }
-            break
+            if (await ctx.member?.moderatable()) {
+              // do not attempt to mute if cannot
+              punishmentString =
+                ". Additionally, you will be muted for 15 minutes.";
+              setTimeout(async () => {
+                await ctx.member?.edit(
+                  {
+                    communication_disabled_until: String(
+                      Date.now() + 15 * 60 * 1000,
+                    ),
+                  },
+                  "Muted by Artemis: User failed to verify. Use /setup to change this behavior.",
+                );
+              }, 3000);
+            } else {
+              punishmentString =
+                punishmentString +
+                ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so.";
+            }
+            break;
           case "mute.60":
-              punishmentString = ". Additionally, you will be muted for 1 hour."
-              if (await ctx.member?.moderatable()) { // do not attempt to mute if cannot
-              setTimeout(async ()=>{
-                
-                  await ctx.member?.edit({
-                    communication_disabled_until: String(Date.now() + ((60*60)*1000))
-                  }, "Muted by Artemis: User failed to verify. Use /setup to change this behavior.")
-                
-              },3000)
-            }else {
-              punishmentString = punishmentString + ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so."
+            punishmentString = ". Additionally, you will be muted for 1 hour.";
+            if (await ctx.member?.moderatable()) {
+              // do not attempt to mute if cannot
+              setTimeout(async () => {
+                await ctx.member?.edit(
+                  {
+                    communication_disabled_until: String(
+                      Date.now() + 60 * 60 * 1000,
+                    ),
+                  },
+                  "Muted by Artemis: User failed to verify. Use /setup to change this behavior.",
+                );
+              }, 3000);
+            } else {
+              punishmentString =
+                punishmentString +
+                ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so.";
             }
-            break
+            break;
           case "mute.180":
-              punishmentString = ". Additionally, you will be muted for 3 hours."
-              if (await ctx.member?.moderatable()) { // do not attempt to mute if cannot
-              setTimeout(async ()=>{
-                  await ctx.member?.edit({
-                    communication_disabled_until: String(Date.now() + (((60*3)*60)*1000))
-                  }, "Muted by Artemis: User failed to verify. Use /setup to change this behavior.")
-                
-              },3000)
-            }else {
-              punishmentString = punishmentString + ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so."
+            punishmentString = ". Additionally, you will be muted for 3 hours.";
+            if (await ctx.member?.moderatable()) {
+              // do not attempt to mute if cannot
+              setTimeout(async () => {
+                await ctx.member?.edit(
+                  {
+                    communication_disabled_until: String(
+                      Date.now() + 60 * 3 * 60 * 1000,
+                    ),
+                  },
+                  "Muted by Artemis: User failed to verify. Use /setup to change this behavior.",
+                );
+              }, 3000);
+            } else {
+              punishmentString =
+                punishmentString +
+                ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so.";
             }
-          break
+            break;
           case "ban":
-              punishmentString = ". Additionally, you will be banned from this server in 15 seconds."
-              if (await ctx.member?.bannable()) { // do not attempt to ban if cannot
-              setTimeout(async ()=>{
-                 
-                  await ctx.member?.ban(undefined,"Banned by Artemis: User failed to verify. Use /setup to change this behavior.")
-              },15000)
-            }else {
-              punishmentString = punishmentString + ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so."
+            punishmentString =
+              ". Additionally, you will be banned from this server in 15 seconds.";
+            if (await ctx.member?.bannable()) {
+              // do not attempt to ban if cannot
+              setTimeout(async () => {
+                await ctx.member?.ban(
+                  undefined,
+                  "Banned by Artemis: User failed to verify. Use /setup to change this behavior.",
+                );
+              }, 15000);
+            } else {
+              punishmentString =
+                punishmentString +
+                ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so.";
             }
-          break
+            break;
           default:
-            break
+            break;
         }
         let em = new Embed({
           title: "Verification was unsuccessful.",
@@ -206,7 +239,7 @@ export default class VerifyCommand extends Command {
         await ctx.editOrReply({ embeds: [em] });
         // @ts-expect-error
         await user.roles.add(roleId);
-        endVerification(c)
+        endVerification(c);
       }
     }
   }

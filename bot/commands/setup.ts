@@ -23,12 +23,12 @@ import { PermissionsBitField } from "seyfert/lib/structures/extra/Permissions";
   actiononfail: createStringOption({
     description: "Action to take when the user fails to verify",
     choices: [
-      { name: 'Do Nothing [0]', value: 'nothing' },
-      { name: 'Kick [1]', value: 'kick' },
-      { name: 'Mute (15m) [2]', value: 'mute.15' },
-      { name: 'Mute (1h) [3]', value: 'mute.60' },
-      { name: 'Mute (3h) [4]', value: 'mute.180' },
-      { name: 'Ban [5]', value: 'ban' },
+      { name: "Do Nothing [0]", value: "nothing" },
+      { name: "Kick [1]", value: "kick" },
+      { name: "Mute (15m) [2]", value: "mute.15" },
+      { name: "Mute (1h) [3]", value: "mute.60" },
+      { name: "Mute (3h) [4]", value: "mute.180" },
+      { name: "Ban [5]", value: "ban" },
     ],
     required: false,
   }),
@@ -94,7 +94,12 @@ export default class SetupServerCommand extends Command {
           "config",
           ctx.guildId || "-1",
           // @ts-expect-error
-          btoa(JSON.stringify({ verifyrole: ctx.options.verifyrole.id,actiononfail: (ctx.options.actiononfail || "nothing")})),
+          btoa(
+            JSON.stringify({
+              verifyrole: ctx.options.verifyrole.id,
+              actiononfail: ctx.options.actiononfail || "nothing",
+            }),
+          ),
         );
         await ctx.editOrReply({ embeds: [em], components: [] });
       });
@@ -128,7 +133,12 @@ export default class SetupServerCommand extends Command {
         "config",
         ctx.guildId || "-1",
         // @ts-expect-error
-        btoa(JSON.stringify({ verifyrole: ctx.options.verifyrole.id,actiononfail: (ctx.options.actiononfail || "nothing") })),
+        btoa(
+          JSON.stringify({
+            verifyrole: ctx.options.verifyrole.id,
+            actiononfail: ctx.options.actiononfail || "nothing",
+          }),
+        ),
       );
       await ctx.editOrReply({ embeds: [em], components: [] });
     }
