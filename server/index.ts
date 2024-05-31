@@ -110,7 +110,7 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   let id = String(dbread(db, "verification_tokens", params.code).value);
   let vpn: boolean = await isVPN(ip);
   if (vpn) {
-    endVerification(params.code);
+    
     if (signals["signals"][String(params.code)]) {
       signals["signals"][String(params.code)] = "failed vpn";
     }
@@ -123,7 +123,7 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   let l = dbread(db, "links", iph) || { value: "" };
   // @ts-expect-error
   if (u.value && l.value && (u.value != iph || l.value != id)) {
-    endVerification(params.code);
+    
 
     if (signals["signals"][String(params.code)]) {
       signals["signals"][String(params.code)] = "failed alt";
@@ -137,7 +137,7 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
     await Bun.write("signals.db.json", JSON.stringify(signals));
     dbwrite(db, "users", id, secureIPHash(ip, seed));
     dbwrite(db, "links", secureIPHash(ip, seed), id);
-    endVerification(params.code);
+    
     return `success;${params.code};`;
   }
 });

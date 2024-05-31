@@ -30,7 +30,7 @@ export async function startVerification(id: string) {
   let signals = await Bun.file("signals.db.json").json();
   signals["signals"][String(token)] = "started";
   await Bun.write("signals.db.json", JSON.stringify(signals));
-
+  
   return token;
 }
 export async function endVerification(token: string) {

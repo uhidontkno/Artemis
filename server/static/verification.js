@@ -1,20 +1,21 @@
 function failVerif(reason, serverside = false) {
   (async () => {
     if (!serverside) {
+      let areason = reason;
       if (
         reason == "Please turn off your VPN." ||
         reason == "Please disable your VPN"
       ) {
-        reason = "because you're using a VPN";
+        areason = "because you're using a VPN";
       }
       if (reason == "Incognito Mode detected") {
-        reason = "because you are on Incognito Mode";
+        areason = "because you are on Incognito Mode";
       }
       await fetch(
         `/verify/${document.location.pathname.split("/verify/")[1]}manualfail`,
         {
           method: "POST",
-          body: reason,
+          body: areason,
         },
       );
     }

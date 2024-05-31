@@ -93,10 +93,12 @@ export default class SetupServerCommand extends Command {
           db,
           "config",
           ctx.guildId || "-1",
-          // @ts-expect-error
+          
           btoa(
             JSON.stringify({
+              // @ts-expect-error
               verifyrole: ctx.options.verifyrole.id,
+              // @ts-expect-error
               actiononfail: ctx.options.actiononfail || "nothing",
             }),
           ),
@@ -132,10 +134,12 @@ export default class SetupServerCommand extends Command {
         db,
         "config",
         ctx.guildId || "-1",
-        // @ts-expect-error
+        
         btoa(
           JSON.stringify({
+            // @ts-expect-error
             verifyrole: ctx.options.verifyrole.id,
+            // @ts-expect-error
             actiononfail: ctx.options.actiononfail || "nothing",
           }),
         ),

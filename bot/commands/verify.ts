@@ -145,9 +145,9 @@ export default class VerifyCommand extends Command {
               setTimeout(async () => {
                 await ctx.member?.edit(
                   {
-                    communication_disabled_until: String(
+                    communication_disabled_until: new Date(
                       Date.now() + 15 * 60 * 1000,
-                    ),
+                    ).toISOString(),
                   },
                   "Muted by Artemis: User failed to verify. Use /setup to change this behavior.",
                 );
@@ -165,9 +165,9 @@ export default class VerifyCommand extends Command {
               setTimeout(async () => {
                 await ctx.member?.edit(
                   {
-                    communication_disabled_until: String(
-                      Date.now() + 60 * 60 * 1000,
-                    ),
+                    communication_disabled_until: 
+                      new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+                    
                   },
                   "Muted by Artemis: User failed to verify. Use /setup to change this behavior.",
                 );
@@ -185,9 +185,9 @@ export default class VerifyCommand extends Command {
               setTimeout(async () => {
                 await ctx.member?.edit(
                   {
-                    communication_disabled_until: String(
+                    communication_disabled_until: new Date(
                       Date.now() + 60 * 3 * 60 * 1000,
-                    ),
+                    ).toISOString(),
                   },
                   "Muted by Artemis: User failed to verify. Use /setup to change this behavior.",
                 );
