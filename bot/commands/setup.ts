@@ -22,7 +22,8 @@ import { ButtonStyle, ChannelFlags, ChannelType, MessageFlags } from "seyfert/li
   }),
   loggingchannel: createChannelOption({
     description:"Channel to log verifications",
-    channel_types:[ChannelType.GuildText,ChannelType.PrivateThread]
+    channel_types:[ChannelType.GuildText,ChannelType.PrivateThread],
+    required:true
   }),
   actiononfail: createStringOption({
     description: "Action to take when the user fails to verify",
