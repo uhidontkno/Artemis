@@ -1,8 +1,15 @@
-import { Declare, Command, type CommandContext,Embed,Button,ActionRow} from "seyfert";
+import {
+  Declare,
+  Command,
+  type CommandContext,
+  Embed,
+  Button,
+  ActionRow,
+} from "seyfert";
 import { EmbedColors } from "seyfert/lib/common";
-import { MessageFlags,ButtonStyle } from "seyfert/lib/types";
+import { MessageFlags, ButtonStyle } from "seyfert/lib/types";
 import { ButtonInteraction } from "seyfert";
-import { dbopen,dbread } from "../../components/sqllite";
+import { dbopen, dbread } from "../../components/sqllite";
 @Declare({
   name: "panel",
   description: "Show the verification panel",
@@ -32,8 +39,7 @@ export default class PanelCommand extends Command {
     let em = new Embed({
       title: "",
       color: EmbedColors.Blurple,
-      description:
-        "Click the blue button below to verify",
+      description: "Click the blue button below to verify",
     });
     // buttons
     const v = new Button()
@@ -41,9 +47,11 @@ export default class PanelCommand extends Command {
       .setStyle(ButtonStyle.Primary)
       .setLabel("Verify");
     const row = new ActionRow<Button>().setComponents([v]);
-    
-    
-    let m = await ctx.client.messages.write(ctx.channelId,{ embeds: [em], components: [row] });
+
+    let m = await ctx.client.messages.write(ctx.channelId, {
+      embeds: [em],
+      components: [row],
+    });
 
     await ctx.editOrReply({
       content: "Sent",

@@ -13,7 +13,12 @@ import {
 } from "seyfert";
 import { dbopen, dbwrite, dbread } from "../../components/sqllite";
 import { EmbedColors } from "seyfert/lib/common";
-import { ButtonStyle, ChannelFlags, ChannelType, MessageFlags } from "seyfert/lib/types";
+import {
+  ButtonStyle,
+  ChannelFlags,
+  ChannelType,
+  MessageFlags,
+} from "seyfert/lib/types";
 
 @Options({
   verifyrole: createRoleOption({
@@ -21,9 +26,9 @@ import { ButtonStyle, ChannelFlags, ChannelType, MessageFlags } from "seyfert/li
     required: true,
   }),
   loggingchannel: createChannelOption({
-    description:"Channel to log verifications",
-    channel_types:[ChannelType.GuildText,ChannelType.PrivateThread],
-    required:true
+    description: "Channel to log verifications",
+    channel_types: [ChannelType.GuildText, ChannelType.PrivateThread],
+    required: true,
   }),
   actiononfail: createStringOption({
     description: "Action to take when the user fails to verify",
@@ -98,7 +103,7 @@ export default class SetupServerCommand extends Command {
           db,
           "config",
           ctx.guildId || "-1",
-          
+
           btoa(
             JSON.stringify({
               // @ts-expect-error
@@ -106,7 +111,7 @@ export default class SetupServerCommand extends Command {
               // @ts-expect-error
               actiononfail: ctx.options.actiononfail || "nothing",
               // @ts-expect-error
-              loggingchannel:ctx.options.loggingchannel.id
+              loggingchannel: ctx.options.loggingchannel.id,
             }),
           ),
         );
@@ -141,7 +146,7 @@ export default class SetupServerCommand extends Command {
         db,
         "config",
         ctx.guildId || "-1",
-        
+
         btoa(
           JSON.stringify({
             // @ts-expect-error
@@ -149,7 +154,7 @@ export default class SetupServerCommand extends Command {
             // @ts-expect-error
             actiononfail: ctx.options.actiononfail || "nothing",
             // @ts-expect-error
-            loggingchannel:ctx.options.loggingchannel.id
+            loggingchannel: ctx.options.loggingchannel.id,
           }),
         ),
       );

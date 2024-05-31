@@ -9,6 +9,6 @@ module.exports = config.bot({
     output: "bot", //If you are using bun, set "src" instead
     commands: "commands",
     events: "events",
-    components:"handlers"
+    components: "handlers",
   },
 });
