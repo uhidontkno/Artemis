@@ -6,6 +6,7 @@ import {
   User,
   GuildMember,
 } from "seyfert";
+import { MessageFlags } from "seyfert/lib/types";
 import { EmbedColors } from "seyfert/lib/common";
 import { dbopen, dbread } from "../../components/sqllite";
 import { endVerification, startVerification } from "../../components/helper";
@@ -44,7 +45,7 @@ export default class VerifyCommand extends Command {
         color: EmbedColors.Red,
         description: "Server owners and bots cannot use this command.",
       });
-      await ctx.editOrReply({ embeds: [em] });
+      await ctx.editOrReply({ embeds: [em], flags: MessageFlags.Ephemeral });
       return;
     }
     
@@ -57,7 +58,7 @@ export default class VerifyCommand extends Command {
         description:
           "This server has not been setup yet. Please run the `/setup` command.",
       });
-      await ctx.editOrReply({ embeds: [em] });
+      await ctx.editOrReply({ embeds: [em], flags: MessageFlags.Ephemeral, });
       return;
     }
 
@@ -73,7 +74,7 @@ export default class VerifyCommand extends Command {
         color: EmbedColors.Red,
         description: "You already have the verified role.",
       });
-      await ctx.editOrReply({ embeds: [em] });
+      await ctx.editOrReply({ embeds: [em],flags: MessageFlags.Ephemeral, });
       return;
     } else {
       c = await startVerification(ctx.author.id);

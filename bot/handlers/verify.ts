@@ -10,6 +10,7 @@ export default class VerifyButton extends ComponentCommand {
   }
 
   async run(ctx: ComponentContext<typeof this.componentType>) {
+    //@ts-expect-error
     return await new VerifyCommand().run(ctx);
   }
 }
