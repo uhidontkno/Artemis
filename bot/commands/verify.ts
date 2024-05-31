@@ -78,7 +78,8 @@ export default class VerifyCommand extends Command {
       return;
     } else {
       c = await startVerification(ctx.author.id);
-      let log = `**Verification started** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Code: \`${c}\``
+      // @ts-expect-error
+      let log = `**Verification started** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: \`${c}\``
       let logMsg = await ctx.client.messages.write(config.loggingchannel, { content: log });
       let fn = async () => {
         signal = await Bun.file("signals.db.json").json();
@@ -106,7 +107,8 @@ export default class VerifyCommand extends Command {
       //Bun.write("signals.db.json",JSON.stringify(s))
       if (signal.startsWith("failed")) {
         endVerification(c);
-        log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Code: ~~\`${c}\`~~\n* Verification failed with reason: `;
+        // @ts-expect-error
+        log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: ~~\`${c}\`~~\n* Verification failed with reason: `;
         
         let desc = "";
         switch (signal.split(";")[0]) {
@@ -252,7 +254,8 @@ export default class VerifyCommand extends Command {
         });
         await ctx.editOrReply({ embeds: [em] });
       } else {
-        log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Code: ~~\`${c}\`~~\n* Verification passed!`
+        // @ts-expect-error
+        log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: ~~\`${c}\`~~\n* Verification passed!`
         let em = new Embed({
           title: "Verification was successful!",
           color: EmbedColors.Green,
