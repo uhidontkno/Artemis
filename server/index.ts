@@ -120,10 +120,13 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   let iph = secureIPHash(ip, seed);
   let u = dbread(db, "users", id) || { value: "" };
   let l = dbread(db, "links", iph) || { value: "" };
-  // @ts-expect-error
+  
   if (
+    // @ts-expect-error
     (u.value || l.value) &&
+    // @ts-expect-error
     ((u.value != iph && u.value != undefined) ||
+    // @ts-expect-error
       (l.value != id && l.value != undefined))
   ) {
     if (signals["signals"][String(params.code)]) {
