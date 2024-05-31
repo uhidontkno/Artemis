@@ -1,4 +1,14 @@
 function failVerif(reason,serverside = false) {
+  (async () => {
+    if (!serverside) {
+      if (reason == "Please turn off your VPN." || reason == "Please disable your VPN") {reason = "because you're using a VPN"}
+      if (reason == "Incognito Mode detected") {reason = "because you are on Incognito Mode"}
+    await fetch(`/verify/${document.location.pathname.split("/verify/")[1]}manualfail`,{
+      method:"POST",
+      body:reason
+    })
+  }
+  })();
   let s = document.querySelector("object").contentDocument;
   s.querySelector("#big-star").style.animation = "none";
   s.querySelector("#small-star").style.animation = "none";
@@ -16,16 +26,6 @@ function failVerif(reason,serverside = false) {
   }, 100);
   document.querySelector("h1").innerText = reason;
   document.title = "Verification Failed | Artemis";
-  (async () => {
-    if (!serverside) {
-      if (reason == "Please turn off your VPN." || reason == "Please disable your VPN") {reason = "because you're using a VPN"}
-    await fetch(`/verify/${document.location.pathname.split("/verify/")[1]}manualfail`,{
-      method:"POST",
-      body:reason
-    })
-  }
-  })();
-
 }
 
 function successVerif() {
