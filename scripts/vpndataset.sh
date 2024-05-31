@@ -1,3 +1,9 @@
+echo Removing stale files...
+
+rm -f /tmp/bl.filtering.txt
+rm -f /tmp/bl.final.txt
+rm -f ./components/vpn_ips.txt
+
 echo Downloading datasets...
 
 # Download ipv4 datasets
@@ -23,27 +29,33 @@ curl -o /tmp/bl.ipv6_dataset.txt https://raw.githubusercontent.com/youngjun-chan
 
 echo Downloaded dataset! Combining files...
 
-pattern="^bl.*\.txt$"
+pattern="bl.*\.txt$"
 files=()
 
 for file in /tmp/*; do
     if [[ "$file" =~ $pattern ]]; then
+        # echo $file
         files+=("$file")
     fi
 done
 
 echo Found files, combining...
 
-rm -f /tmp/bl.filtering.txt
-cat "${files[@]}" >> /tmp/bl.filtering.txt
+if [ ${#files[@]} -eq 0 ]; then
+    echo "PANIC: REGEX DIDNT MATCH ANYTHING"
+    exit 1
+fi
+
+
+for file in "${files[@]}"; do
+    cat $file >> /tmp/bl.filtering.txt
+done
 
 echo Combined files! Filtering...
-rm -f /tmp/bl.final.txt
-grep -v '^#' "bl.filtering.txt" | sort -u > "bl.final.txt"
+grep -v '^#' "/tmp/bl.filtering.txt" | sort -u > "/tmp/bl.final.txt"
 
 echo Cleaning up...
 
-rm -f ./components/vpn_ips.txt
 mv /tmp/bl.final.txt ./components/vpn_ips.txt
 rm -rf /tmp/bl.*
 
