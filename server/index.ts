@@ -122,7 +122,7 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
   let u = dbread(db, "users", id) || { value: "" };
   let l = dbread(db, "links", iph) || { value: "" };
   // @ts-expect-error
-  if ((u.value || l.value) && (u.value != iph || l.value != id)) {
+  if ((u.value || l.value) && ((u.value != iph && u.value != undefined) || (l.value != id && l.value != undefined ))) {
     
 
     if (signals["signals"][String(params.code)]) {

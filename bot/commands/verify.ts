@@ -76,7 +76,8 @@ export default class VerifyCommand extends Command {
       return;
     } else {
       c = await startVerification(ctx.author.id);
-
+      let log = `**Verification started** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Code: \`${c}\``
+      let logMsg = await ctx.client.messages.write(config.loggingchannel, { content: log });
       let fn = async () => {
         signal = await Bun.file("signals.db.json").json();
         // @ts-expect-error
@@ -103,25 +104,35 @@ export default class VerifyCommand extends Command {
       //Bun.write("signals.db.json",JSON.stringify(s))
       if (signal.startsWith("failed")) {
         endVerification(c);
+        log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Code: ~~\`${c}\`~~\n* Verification failed with reason: `;
+        
         let desc = "";
         switch (signal.split(";")[0]) {
           case "failed alt":
+
+            log = log + "This user is an alt account"
             desc = "we've detected that you're on an alt account";
             break;
           case "failed vpn":
+            log = log + "A VPN was detected"
             desc = "we detect that you're on a VPN or a proxy.";
             break;
           case "failed override":
+            log = log + signal.split(";")[1].replace("because","").replaceAll("you're","This user").replaceAll("you are","This user")
             desc = signal.split(";")[1];
             break;
           default:
+            log = log + signal
             desc = "we don't know";
         }
+        await logMsg.edit({"content":log})
+
         let punishmentString = ". ";
         switch (punishment) {
           case "nothing":
             break;
           case "kick":
+            log = log + `\n* User scheduled to get kicked <t:${Date.now() + 15}:R>`
             punishmentString =
               ". Additionally, you will be kicked from this server in 15 seconds.";
             setTimeout(async () => {
@@ -131,6 +142,8 @@ export default class VerifyCommand extends Command {
                   "Kicked by Artemis: User failed to verify. Use /setup to change this behavior.",
                 );
               } else {
+                log = log + `\n:warning: **CANNOT PUNISH USER**; I do not have permission to punish this user.`
+
                 punishmentString =
                   punishmentString +
                   ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so.";
@@ -138,6 +151,7 @@ export default class VerifyCommand extends Command {
             }, 15000);
             break;
           case "mute.15":
+            log = log + `\n* User got muted <t:${Date.now()}:R>`
             if (await ctx.member?.moderatable()) {
               // do not attempt to mute if cannot
               punishmentString =
@@ -153,12 +167,14 @@ export default class VerifyCommand extends Command {
                 );
               }, 1000);
             } else {
+              log = log + `\n:warning: **CANNOT PUNISH USER**; I do not have permission to punish this user.`
               punishmentString =
                 punishmentString +
                 ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so.";
             }
             break;
           case "mute.60":
+            log = log + `\n* User got muted <t:${Date.now()}:R>`
             punishmentString = ". Additionally, you will be muted for 1 hour.";
             if (await ctx.member?.moderatable()) {
               // do not attempt to mute if cannot
@@ -173,12 +189,14 @@ export default class VerifyCommand extends Command {
                 );
               }, 1000);
             } else {
+              log = log + `\n:warning: **CANNOT PUNISH USER**; I do not have permission to punish this user.`
               punishmentString =
                 punishmentString +
                 ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so.";
             }
             break;
           case "mute.180":
+            log = log + `\n* User got muted <t:${Date.now()}:R>`
             punishmentString = ". Additionally, you will be muted for 3 hours.";
             if (await ctx.member?.moderatable()) {
               // do not attempt to mute if cannot
@@ -193,12 +211,14 @@ export default class VerifyCommand extends Command {
                 );
               }, 1000);
             } else {
+              log = log + `\n:warning: **CANNOT PUNISH USER**; I do not have permission to punish this user.`
               punishmentString =
                 punishmentString +
                 ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so.";
             }
             break;
           case "ban":
+            log = log + `\n* User scheduled to get BANNED <t:${Date.now() + 15}:R>`
             punishmentString =
               ". Additionally, you will be banned from this server in 15 seconds.";
             if (await ctx.member?.bannable()) {
@@ -210,6 +230,7 @@ export default class VerifyCommand extends Command {
                 );
               }, 15000);
             } else {
+              log = log + `\n:warning: **CANNOT PUNISH USER**; I do not have permission to punish this user.`
               punishmentString =
                 punishmentString +
                 ".. If I could, but no, I cannot because whoever invited me never gave me permission to do so.";
@@ -218,6 +239,7 @@ export default class VerifyCommand extends Command {
           default:
             break;
         }
+        await logMsg.edit({"content":log})
         let em = new Embed({
           title: "Verification was unsuccessful.",
           color: EmbedColors.Red,
@@ -228,6 +250,7 @@ export default class VerifyCommand extends Command {
         });
         await ctx.editOrReply({ embeds: [em] });
       } else {
+        log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Code: ~~\`${c}\`~~\n* Verification passed!`
         let em = new Embed({
           title: "Verification was successful!",
           color: EmbedColors.Green,
@@ -237,8 +260,18 @@ export default class VerifyCommand extends Command {
           text: "Powered by Artemis | A FOSS Double Counter alternative.",
         });
         await ctx.editOrReply({ embeds: [em] });
+        await logMsg.edit({"content":log})
+        try {
         // @ts-expect-error
         await user.roles.add(roleId);
+        log = log + `\n* Role **given** to user!`
+        await logMsg.edit({"content":log})
+        } catch {
+        // @ts-expect-error
+        await user.roles.add(roleId);
+        log = log + `\n* Role could **not** be given to user!`
+        await logMsg.edit({"content":log})
+        }
         endVerification(c);
       }
     }

@@ -9,16 +9,20 @@ import {
   Button,
   ButtonInteraction,
   createStringOption,
+  createChannelOption,
 } from "seyfert";
 import { dbopen, dbwrite, dbread } from "../../components/sqllite";
 import { EmbedColors } from "seyfert/lib/common";
-import { ButtonStyle, MessageFlags } from "seyfert/lib/types";
-import { PermissionsBitField } from "seyfert/lib/structures/extra/Permissions";
+import { ButtonStyle, ChannelFlags, ChannelType, MessageFlags } from "seyfert/lib/types";
 
 @Options({
   verifyrole: createRoleOption({
     description: "Role to give users when they verify.",
     required: true,
+  }),
+  loggingchannel: createChannelOption({
+    description:"Channel to log verifications",
+    channel_types:[ChannelType.GuildText,ChannelType.PrivateThread]
   }),
   actiononfail: createStringOption({
     description: "Action to take when the user fails to verify",
@@ -100,6 +104,8 @@ export default class SetupServerCommand extends Command {
               verifyrole: ctx.options.verifyrole.id,
               // @ts-expect-error
               actiononfail: ctx.options.actiononfail || "nothing",
+              // @ts-expect-error
+              loggingchannel:ctx.options.loggingchannel.id
             }),
           ),
         );
@@ -141,6 +147,8 @@ export default class SetupServerCommand extends Command {
             verifyrole: ctx.options.verifyrole.id,
             // @ts-expect-error
             actiononfail: ctx.options.actiononfail || "nothing",
+            // @ts-expect-error
+            loggingchannel:ctx.options.loggingchannel.id
           }),
         ),
       );
