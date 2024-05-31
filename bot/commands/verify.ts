@@ -38,6 +38,16 @@ function waitSignal(
 })
 export default class VerifyCommand extends Command {
   async run(ctx: CommandContext) {
+    if (ctx.author.bot || ctx.author.id == ctx.guild()?.ownerId) {
+      let em = new Embed({
+        title: "Error",
+        color: EmbedColors.Red,
+        description:
+          "Server owners and bots cannot use this command.",
+      });
+      await ctx.editOrReply({ embeds: [em] });
+      return;
+    }
     await ctx.deferReply(true);
     let db = dbopen("db.sql");
     if (!dbread(db, "config", ctx.guildId || "-1")) {
