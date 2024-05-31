@@ -47,6 +47,7 @@ export default class VerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em] });
       return;
     }
+    
     await ctx.deferReply(true);
     let db = dbopen("db.sql");
     if (!dbread(db, "config", ctx.guildId || "-1")) {
