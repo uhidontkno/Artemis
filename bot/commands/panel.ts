@@ -1,7 +1,6 @@
 import { Declare, Command, type CommandContext,Embed,Button,ActionRow} from "seyfert";
 import { EmbedColors } from "seyfert/lib/common";
 import { MessageFlags,ButtonStyle } from "seyfert/lib/types";
-import VerifyCommand from "./verify";
 import { ButtonInteraction } from "seyfert";
 @Declare({
   name: "panel",
