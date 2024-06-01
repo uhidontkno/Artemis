@@ -62,7 +62,7 @@ if (!process.env.DEPLOYMENT_URL) {
 
 app.use(rateLimit(config.ratelimit));
 app.use(staticPlugin({ assets: "server/static/", prefix: "/" }));
-//app.use(nocache);
+app.use(nocache);
 app.use(compression());
 app.use(ip());
 
