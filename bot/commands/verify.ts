@@ -122,6 +122,22 @@ export default class VerifyCommand extends Command {
       //let s = await Bun.file("signals.db.json").json();
       //s[c] = undefined;
       //Bun.write("signals.db.json",JSON.stringify(s))
+      console.log(signal)
+      if (!signal || signal == "") {
+        endVerification(c);
+        // @ts-expect-error
+        log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: ~~\`${c}\`~~\n* Verification failed with reason: User did not verify within 2 minutes`;
+        await logMsg.edit({ content: log });
+        let em = new Embed({
+          title: "Verification timed out.",
+          color: EmbedColors.Grey,
+          description: `You have failed verification because you never verified within 2 minutes`,
+        });
+        em.setFooter({
+          text: "Powered by Artemis | A FOSS Double Counter alternative.",
+        });
+        await ctx.editOrReply({ embeds: [em] });
+      } else
       if (signal.startsWith("failed")) {
         endVerification(c);
         // @ts-expect-error
