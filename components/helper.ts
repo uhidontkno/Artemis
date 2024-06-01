@@ -73,12 +73,13 @@ export function aesEncrypt(
     default:
       throw new Error("Unsupported AES mode");
   }
-
+  console.log(keySize,ivSize)
   const cipher = cgraphy.createCipheriv(
     mode,
     key.slice(0, keySize),
-    iv.slice(0, ivSize),
+    iv.slice(0, ivSize ),
   );
+
   let encrypted = cipher.update(text, "utf8", "hex");
   encrypted += cipher.final("hex");
   return encrypted;
@@ -121,8 +122,8 @@ export function aesDecrypt(
   mode = mode + "-cbc";
   const decipher = cgraphy.createDecipheriv(
     mode,
-    key.slice(0, keySize),
-    iv.slice(0, ivSize),
+    key.slice(0, keySize - 1),
+    iv.slice(0, ivSize - 1),
   );
   let decrypted = decipher.update(text, "hex", "utf8");
   decrypted += decipher.final("utf8");
