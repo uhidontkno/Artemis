@@ -55,6 +55,10 @@ if (!process.env.BOT_TOKEN) {
   logger.error("Specify your bot's token in your .env file!");
   process.exit(1);
 }
+if (!process.env.DEPLOYMENT_URL) {
+  logger.error("Specify your bot's deployment url in your .env file!");
+  process.exit(1);
+}
 
 app.use(rateLimit(config.ratelimit));
 app.use(staticPlugin({ assets: "server/static/", prefix: "/" }));
