@@ -52,7 +52,7 @@ export function aesEncrypt(
   mode: string,
   text: string,
   key: string,
-  iv: string = "12345DefaultIV",
+  iv: string = "12345DefaultIVzz",
 ): string {
   let keySize: number;
   let ivSize: number;
@@ -73,7 +73,6 @@ export function aesEncrypt(
     default:
       throw new Error("Unsupported AES mode");
   }
-  console.log(keySize,ivSize)
   const cipher = cgraphy.createCipheriv(
     mode,
     key.slice(0, keySize),
@@ -98,7 +97,7 @@ export function aesDecrypt(
   mode: string,
   text: string,
   key: string,
-  iv: string = "12345DefaultIV",
+  iv: string = "12345DefaultIVzz",
 ): string {
   let keySize: number;
   let ivSize: number;
