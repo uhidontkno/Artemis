@@ -16,7 +16,7 @@ import {
 } from "../../components/helper";
 var c: string = "";
 var signal: string;
-let counter = 0;
+let counter = {};
 function waitSignal(
   interval: number,
   fn: () => Promise<string>,
@@ -24,7 +24,7 @@ function waitSignal(
   return new Promise((resolve, reject) => {
     const id = setInterval(async () => {
 
-      counter++;
+      
       try {
         let _ = await fn();
 
@@ -46,6 +46,8 @@ function waitSignal(
 })
 export default class VerifyCommand extends Command {
   async run(ctx: CommandContext) {
+    // @ts-expect-error
+    counter[ctx.author.id] = 0;
     if (ctx.author.bot || ctx.author.id == ctx.guild()?.ownerId) {
       let em = new Embed({
         title: "Error",
@@ -96,13 +98,16 @@ export default class VerifyCommand extends Command {
         content: log,
       });
       let fn = async () => {
-        if (counter >= 120) {
+        // @ts-expect-error
+        if (counter[ctx.author.id] >= 120) {
           signal = await Bun.file("signals.db.json").json();
           // @ts-expect-error
           signal["signals"][c] = "failed timeout";
           Bun.write("signals.db.json",JSON.stringify(signal))
           return "failed timeout";
         }
+        // @ts-expect-error
+        counter[ctx.author.id] = counter[ctx.author.id] + 1;
         signal = await Bun.file("signals.db.json").json();
         // @ts-expect-error
         signal = signal["signals"][c];
