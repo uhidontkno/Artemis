@@ -17,7 +17,7 @@ export default createEvent({
       {
         name: "for verifications",
         type: ActivityType.Watching,
-        state: ``,
+        state: `    `,
       },
       {
         name: "you",
@@ -27,7 +27,17 @@ export default createEvent({
       {
         name: "out for alt accounts",
         type: ActivityType.Watching,
-        state: "",
+        state: "    ",
+      },
+      {
+        name: "out for all of us",
+        type: ActivityType.Watching,
+        state: "    ",
+      },
+      {
+        name: "Double Counter",
+        type: ActivityType.Competing,
+        state: "    ",
       },
       {
         name: `🔗 ${process.env["DEPLOYMENT_URL"]}`,
@@ -35,6 +45,13 @@ export default createEvent({
         state: `🔗 ${process.env["DEPLOYMENT_URL"]}`,
       },
     ];
+    // @ts-ignore
+    client.gateway.setPresence({
+      activities: [statuses[Math.floor(Math.random() * statuses.length)]],
+      afk: false,
+      since: Date.now(),
+      status: PresenceUpdateStatus.DoNotDisturb,
+    });
     setInterval(() => {
       // @ts-ignore
       client.gateway.setPresence({
@@ -43,6 +60,6 @@ export default createEvent({
         since: Date.now(),
         status: PresenceUpdateStatus.DoNotDisturb,
       });
-    });
+    },30000);
   },
 });
