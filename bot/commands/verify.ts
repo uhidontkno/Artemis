@@ -80,6 +80,7 @@ export default class VerifyCommand extends Command {
     );
     let roleId = config.verifyrole;
     let punishment = config.actiononfail;
+    let minage = config.minimumaccountage || "24";
     let user = ctx.member;
     //@ts-expect-error
     if (user.roles.keys.includes(roleId)) {
@@ -91,6 +92,29 @@ export default class VerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em], flags: MessageFlags.Ephemeral });
       return;
     } else {
+      // @ts-expect-error
+      let createdAgo = (Math.round(Date.now() / 1000) - Math.round(ctx.member?.createdTimestamp / 1000))/3600
+      if (Number(minage || "24") < createdAgo) {
+              // @ts-expect-error
+      let log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* :warning: Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Automatically failed verification due to account age.`;
+      await ctx.client.messages.write(config.loggingchannel, {
+        content: log,
+      });
+      let formattedAge = ""
+      if (Number(minage || "24") < 24) {formattedAge = `${minage || "24"} hours`} else {
+        `${Math.round(Number(minage || "24")/24)} days`
+      }
+      let em = new Embed({
+        title: "Verification was unsuccessful.",
+        color: EmbedColors.Red,
+        description: `You have failed verification because your account to too young to verify. The server requires you to be on Discord for ${minage}.`,
+      });
+      em.setFooter({
+        text: "Powered by Artemis | A FOSS Double Counter alternative.",
+      });
+      await ctx.editOrReply({ embeds: [em] });
+      return;
+      }
       c = await startVerification(ctx.author.id);
       // @ts-expect-error
       let log = `**Verification started** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: \`${c}\``;

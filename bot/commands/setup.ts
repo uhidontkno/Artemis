@@ -32,14 +32,26 @@ import { encryptData } from "../../components/helper";
     required: true,
   }),
   actiononfail: createStringOption({
-    description: "Action to take when the user fails to verify",
+    description: "Action to take when the user fails to verify. (Recommended to do nothing, kick, or mute for 15 minutes)",
     choices: [
       { name: "Do Nothing [0]", value: "nothing" },
-      { name: "Kick [1]", value: "kick" },
+      { name: "Kick       [1]", value: "kick" },
       { name: "Mute (15m) [2]", value: "mute.15" },
-      { name: "Mute (1h) [3]", value: "mute.60" },
-      { name: "Mute (3h) [4]", value: "mute.180" },
-      { name: "Ban [5]", value: "ban" },
+      { name: "Mute (1h)  [3]", value: "mute.60" },
+      { name: "Mute (3h)  [4]", value: "mute.180" },
+      { name: "Ban        [5]", value: "ban" },
+    ],
+    required: false,
+  }),
+  minimumaccountage: createStringOption({
+    description: "Minimum account age to verify. (Default: 3 days, recommended: 1 week)",
+    choices: [
+      { name: "1 Hour  ", value: "1" },
+      { name: "6 Hours ", value: "6" },
+      { name: "1 Day   ", value: "24" },
+      { name: "3 Days  ", value: "72" },
+      { name: "1 Week  ", value: "168" },
+      { name: "2 Weeks ", value: "336" },
     ],
     required: false,
   }),
@@ -113,6 +125,8 @@ export default class SetupServerCommand extends Command {
               actiononfail: ctx.options.actiononfail || "nothing",
               // @ts-expect-error
               loggingchannel: ctx.options.loggingchannel.id,
+              // @ts-expect-error
+              minimumaccountage: ctx.options.minimumaccountage || "72",
             }),
             String(ctx.guildId),
           ),
