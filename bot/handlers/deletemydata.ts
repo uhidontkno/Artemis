@@ -2,6 +2,7 @@ import { ComponentCommand, Embed, type ComponentContext,Button,ActionRow,ButtonI
 import { MessageFlags } from "seyfert/lib/types";
 import { EmbedColors } from "seyfert/lib/common";
 import { ButtonStyle } from "seyfert/lib/types";
+import { dbread,dbdelete,dbopen } from "../../components/sqllite";
 
 export default class DeleteDataButton extends ComponentCommand {
   componentType = "Button" as const;
@@ -31,16 +32,40 @@ export default class DeleteDataButton extends ComponentCommand {
   let m = await ctx.editOrReply({ embeds: [e], components: [row] });
   // @ts-expect-error
   const collector = m.createComponentCollector();
+  collector.run("cancel", async (i: ButtonInteraction) => {
+    i.editOrReply({content:"Operation cancelled. Thank you for keeping me around."})
+  });
   collector.run("confirm", async (i: ButtonInteraction) => {
     if (!i.isButton()) {
       return;
     }
     if (i.user.id != ctx.author.id) {
-      return i.write({
+      return i.editOrReply({
         content: "This is **not** your button.",
-
         flags: MessageFlags.Ephemeral,
       });
+    }
+    await i.deferReply(64);
+    i.editOrReply({content:"Deleting your data...",flags: MessageFlags.Ephemeral});
+    if (!ctx.me()?.kickable()) {
+        i.editOrReply({content:"What a miracle! You never gave me permission to kick myself.",flags: MessageFlags.Ephemeral,});return
+    }
+    let db = dbopen("db.sql")
+    // @ts-expect-error
+    if (dbread(db,"config",ctx.guildId)) {
+        // @ts-expect-error
+        await ctx.client.messages.write(JSON.parse(atob(dbread(db,"config",ctx.guildId).value)).loggingchannel, {
+            content: `## <@${ctx.author.id}> HAS DELETED THIS SERVER'S DATA!\nSorry to see you all go @everyone... :sob:`,
+          });
+          await ctx.client.messages.write(ctx.channelId, {
+            content: `Sorry to see you all go... :sob:`,
+          });
+        // @ts-expect-error
+        dbdelete(db,"config",ctx.guildId)
+        i.editOrReply({content:"Data deleted. Bye!",flags: MessageFlags.Ephemeral,});
+        await ctx.me()?.kick();
+    } else {
+        i.editOrReply({content:"What a miracle! There was no data to exist.",flags: MessageFlags.Ephemeral,});
     }
 });
   }
