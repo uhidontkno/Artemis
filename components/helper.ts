@@ -1,5 +1,6 @@
 let ipr = require("ip-range-check");
 import logger from "../components/logger";
+import * as cgraphy from "node:crypto";
 import sqllite, {
   dbdelete,
   dbopen,
@@ -43,4 +44,78 @@ export async function endVerification(token: string) {
 
 export function secureIPHash(ip: string, seed: bigint): string {
   return `${Bun.hash.cityHash64(ip, seed)}${Bun.hash.crc32(ip)}`;
+}
+
+// AES operations
+
+export function aesEncrypt(
+  mode: string,
+  text: string,
+  key: string,
+  iv: string = "deblokDefaultIV",
+): string {
+  let keySize: number;
+  let ivSize: number;
+
+  switch (mode) {
+    case "aes-128-cbc":
+      keySize = 16;
+      ivSize = 16;
+      break;
+    case "aes-192-cbc":
+      keySize = 24;
+      ivSize = 16;
+      break;
+    case "aes-256-cbc":
+      keySize = 32;
+      ivSize = 16;
+      break;
+    default:
+      throw new Error("Unsupported AES mode");
+  }
+
+  const cipher = cgraphy.createCipheriv(
+    mode,
+    key.slice(0, keySize),
+    iv.slice(0, ivSize),
+  );
+  let encrypted = cipher.update(text, "utf8", "hex");
+  encrypted += cipher.final("hex");
+  return encrypted;
+}
+
+export function aesDecrypt(
+  mode: string,
+  text: string,
+  key: string,
+  iv: string = "deblokDefaultIV",
+): string {
+  let keySize: number;
+  let ivSize: number;
+
+  switch (mode) {
+    case "aes-128":
+      keySize = 16;
+      ivSize = 16;
+      break;
+    case "aes-192":
+      keySize = 24;
+      ivSize = 16;
+      break;
+    case "aes-256":
+      keySize = 32;
+      ivSize = 16;
+      break;
+    default:
+      throw new Error("Unsupported AES mode");
+  }
+  mode = mode + "-cbc";
+  const decipher = cgraphy.createDecipheriv(
+    mode,
+    key.slice(0, keySize),
+    iv.slice(0, ivSize),
+  );
+  let decrypted = decipher.update(text, "hex", "utf8");
+  decrypted += decipher.final("utf8");
+  return decrypted;
 }
