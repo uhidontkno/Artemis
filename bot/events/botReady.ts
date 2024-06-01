@@ -50,7 +50,7 @@ export default createEvent({
       activities: [statuses[Math.floor(Math.random() * statuses.length)]],
       afk: false,
       since: Date.now(),
-      status: PresenceUpdateStatus.DoNotDisturb,
+      status: PresenceUpdateStatus.Idle,
     });
     setInterval(() => {
       // @ts-ignore
