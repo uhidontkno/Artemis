@@ -5,7 +5,7 @@ import { ActivityType } from "seyfert/lib/types/index";
 import { getBotId,initBotId } from "../../components/helper.ts";
 export default createEvent({
   data: { once: true, name: "botReady" },
-  run(user, client) {
+  async run(user, client) {
     
     initBotId(BigInt(client.botId))
     logger.info(
@@ -15,7 +15,7 @@ export default createEvent({
       {
         name: "this server",
         type: ActivityType.Watching,
-        state: `and ${client.guilds.list.length - 1} other server(s) that support FOSS.`,
+        state: `and ${(await client.guilds.list()).length - 1} other server(s) that support FOSS.`,
       },
       {
         name: "for verifications",
@@ -25,7 +25,7 @@ export default createEvent({
       {
         name: "you",
         type: ActivityType.Watching,
-        state: `and ${client.guilds.list.length - 1} other server(s) that support FOSS.`,
+        state: `and ${(await client.guilds.list()).length - 1} other server(s) that support FOSS.`,
       },
       {
         name: "out for alt accounts",
