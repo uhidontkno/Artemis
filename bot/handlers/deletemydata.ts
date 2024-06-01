@@ -47,9 +47,6 @@ export default class DeleteDataButton extends ComponentCommand {
     }
     await i.deferReply(64);
     i.editOrReply({content:"Deleting your data...",flags: MessageFlags.Ephemeral});
-    if (!ctx.me()?.kickable()) {
-        i.editOrReply({content:"What a miracle! You never gave me permission to kick myself.",flags: MessageFlags.Ephemeral,});return
-    }
     let db = dbopen("db.sql")
     // @ts-expect-error
     if (dbread(db,"config",ctx.guildId)) {
@@ -63,7 +60,8 @@ export default class DeleteDataButton extends ComponentCommand {
         // @ts-expect-error
         dbdelete(db,"config",ctx.guildId)
         i.editOrReply({content:"Data deleted. Bye!",flags: MessageFlags.Ephemeral,});
-        await ctx.me()?.kick();
+        // @ts-expect-error
+        ctx.client.guilds.leave(ctx.guildId)
     } else {
         i.editOrReply({content:"What a miracle! There was no data to exist.",flags: MessageFlags.Ephemeral,});
     }
