@@ -16,12 +16,19 @@ import {
 } from "../../components/helper";
 var c: string = "";
 var signal: string;
+let counter = 0;
 function waitSignal(
   interval: number,
   fn: () => Promise<string>,
 ): Promise<string> {
   return new Promise((resolve, reject) => {
+
     const id = setInterval(async () => {
+      if (counter > 120) {
+        clearInterval(id);
+        resolve("failed timeout")
+      }
+      counter++;
       try {
         let _ = await fn();
 
@@ -132,6 +139,10 @@ export default class VerifyCommand extends Command {
             log = log + "A VPN was detected";
             desc = "we detect that you're on a VPN or a proxy.";
             break;
+          case "failed timeout":
+              log = log + "The user did not verify within 2 minutes.";
+              desc = "you never verified within 2 minutes";
+            break;
           case "failed override":
             log =
               log +
@@ -147,8 +158,8 @@ export default class VerifyCommand extends Command {
             desc = "we don't know";
         }
         await logMsg.edit({ content: log });
-
         let punishmentString = ". ";
+        if (signal != "failed timeout") {
         switch (punishment) {
           case "nothing":
             break;
@@ -278,6 +289,7 @@ export default class VerifyCommand extends Command {
             break;
         }
         await logMsg.edit({ content: log });
+      }
         let em = new Embed({
           title: "Verification was unsuccessful.",
           color: EmbedColors.Red,
