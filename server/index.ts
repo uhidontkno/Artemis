@@ -75,10 +75,6 @@ app.get("detectincognito.min.js", async ({ set }) => {
   );
 });
 
-app.get("/invite/", ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${botClientId}&permissions=1374389716998&scope=bot+applications.commands`
-  return "";
-});
 
 app.get("/api/", () => {
   return "Alive!";
@@ -93,6 +89,15 @@ app.get("/api/ip", ({ ip }) => {
 });
 app.get("/api/isvpn/:ip", ({ params }) => {
   return isVPN(params.ip);
+});
+
+app.get("/invite", ({ set }) => {
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${botClientId}&permissions=1374389716998&scope=bot+applications.commands`
+  return "a";
+});
+app.get("/invite/", ({ set }) => {
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${botClientId}&permissions=1374389716998&scope=bot+applications.commands`
+  return "a";
 });
 
 app.post("/verify/:code/manualfail", async ({ params, body }) => {

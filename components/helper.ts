@@ -8,7 +8,7 @@ import sqllite, {
   dbread,
 } from "../components/sqllite";
 
-export let botClientId:BigInt = 0n
+export let botClientId:BigInt = 300n
 
 export function initBotId(id: bigint) {
     botClientId = id;
