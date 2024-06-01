@@ -17,10 +17,10 @@ import { dbopen, dbread } from "../../components/sqllite";
 export default class PanelCommand extends Command {
   async run(ctx: CommandContext) {
     if (
-      !ctx.member?.permissions.has(ctx.member?.permissions.Flags.Administrator)
+      !ctx.member?.permissions.has(ctx.member?.permissions.Flags.ModerateMembers)
     ) {
       await ctx.editOrReply({
-        content: "You need the `Administrator` permission to use this command.",
+        content: "You need the `Moderate Members` permission to use this command.",
         flags: MessageFlags.Ephemeral,
       });
       return;

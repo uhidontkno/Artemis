@@ -153,6 +153,7 @@ app.get("/api/verify/serverside/:code/", async ({ params, ip }) => {
 // })
 //
 ///////////////////////////////////////////////
+
 app.get("/verify/:code/exists", ({ params }) => {
   let db = dbopen("db.sql");
   if (dbread(db, "verification_tokens", params.code) != null) {

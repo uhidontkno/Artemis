@@ -76,7 +76,7 @@ export function aesEncrypt(
   const cipher = cgraphy.createCipheriv(
     mode,
     key.slice(0, keySize),
-    iv.slice(0, ivSize ),
+    iv.slice(0, ivSize),
   );
 
   let encrypted = cipher.update(text, "utf8", "hex");

@@ -24,9 +24,9 @@ export default class PrivacyCommand extends Command {
       : "We don't have it.";
     let config = '{"error":"You never setup your server with us!"}';
     //try {
-        
-      // @ts-ignore
-      config = decryptData(dbread(db, "config", ctx.guildId).value,ctx.guildId);
+
+    // @ts-ignore
+    config = decryptData(dbread(db, "config", ctx.guildId).value, ctx.guildId);
     //} catch {}
     const del = new Button()
       .setCustomId("delete")
@@ -41,7 +41,7 @@ export default class PrivacyCommand extends Command {
 **Your data that we have collected**:
 * Your IP address *hash* (note: we cant reverse this hash): \n\`${iph}\`
 * Your User ID: \`${ctx.author.id}\`
-${(ctx.guild()?.ownerId == ctx.author.id || ctx.author.id == process.env.BOT_OWNER) ? `* Your server's configuration: \n\`\`\`json\n${config}\`\`\`` : ""}
+${ctx.guild()?.ownerId == ctx.author.id || ctx.author.id == process.env.BOT_OWNER ? `* Your server's configuration: \n\`\`\`json\n${config}\`\`\`` : ""}
 
 **What data is collected**:
 Our verification bot is privacy respecting, so there is zero tracking, zero ads, and zero fingerprinting. [We are even open source under GPL-3.0](https://github.com/uhidontkno/Artemis). We only collect and store data that is absolutely necessary for the functioning of our verification bot. Here is the breakdown:
