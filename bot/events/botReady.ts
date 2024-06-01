@@ -50,7 +50,7 @@ export default createEvent({
     ];
     // @ts-ignore
     client.gateway.setPresence({
-      activities: [statuses[Math.floor(Math.random() * statuses.length)]],
+      activities: [statuses[0]],
       afk: false,
       since: Date.now(),
       status: PresenceUpdateStatus.Idle,
