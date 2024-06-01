@@ -23,11 +23,11 @@ export default class PrivacyCommand extends Command {
         dbread(db, "users", ctx.author.id).value
       : "We don't have it.";
     let config = '{"error":"You never setup your server with us!"}';
-    //try {
+    try {
 
     // @ts-ignore
     config = decryptData(dbread(db, "config", ctx.guildId).value, ctx.guildId);
-    //} catch {}
+    } catch {}
     const del = new Button()
       .setCustomId("delete")
       .setStyle(ButtonStyle.Danger)
