@@ -9,7 +9,7 @@ import {
 import { MessageFlags } from "seyfert/lib/types";
 import { EmbedColors } from "seyfert/lib/common";
 import { dbopen, dbread } from "../../components/sqllite";
-import { endVerification, startVerification } from "../../components/helper";
+import { decryptData, endVerification, startVerification } from "../../components/helper";
 var c: string = "";
 var signal: string;
 function waitSignal(
@@ -63,7 +63,7 @@ export default class VerifyCommand extends Command {
     }
 
     let config = // @ts-expect-error
-      JSON.parse(atob(dbread(db, "config", ctx.guildId || "-1").value));
+      JSON.parse(decryptData(dbread(db, "config", ctx.guildId || "-1").value,String(ctx.guildId)));
     let roleId = config.verifyrole;
     let punishment = config.actiononfail;
     let user = ctx.member;

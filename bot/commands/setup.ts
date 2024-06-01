@@ -19,6 +19,7 @@ import {
   ChannelType,
   MessageFlags,
 } from "seyfert/lib/types";
+import { encryptData } from "../../components/helper";
 
 @Options({
   verifyrole: createRoleOption({
@@ -104,7 +105,7 @@ export default class SetupServerCommand extends Command {
           "config",
           ctx.guildId || "-1",
 
-          btoa(
+          encryptData(
             JSON.stringify({
               // @ts-expect-error
               verifyrole: ctx.options.verifyrole.id,
@@ -112,8 +113,7 @@ export default class SetupServerCommand extends Command {
               actiononfail: ctx.options.actiononfail || "nothing",
               // @ts-expect-error
               loggingchannel: ctx.options.loggingchannel.id,
-            }),
-          ),
+            }),String(ctx.guildId)),
         );
         await ctx.editOrReply({ embeds: [em], components: [] });
       });
@@ -147,7 +147,7 @@ export default class SetupServerCommand extends Command {
         "config",
         ctx.guildId || "-1",
 
-        btoa(
+        encryptData(
           JSON.stringify({
             // @ts-expect-error
             verifyrole: ctx.options.verifyrole.id,
@@ -155,8 +155,7 @@ export default class SetupServerCommand extends Command {
             actiononfail: ctx.options.actiononfail || "nothing",
             // @ts-expect-error
             loggingchannel: ctx.options.loggingchannel.id,
-          }),
-        ),
+          }),String(ctx.guildId)),
       );
       await ctx.editOrReply({ embeds: [em], components: [] });
     }

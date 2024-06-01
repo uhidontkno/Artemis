@@ -10,6 +10,7 @@ import { MessageFlags } from "seyfert/lib/types";
 import { EmbedColors } from "seyfert/lib/common";
 import { ButtonStyle } from "seyfert/lib/types";
 import { dbread, dbdelete, dbopen } from "../../components/sqllite";
+import { decryptData } from "../../components/helper";
 
 export default class DeleteDataButton extends ComponentCommand {
   componentType = "Button" as const;
@@ -78,7 +79,7 @@ export default class DeleteDataButton extends ComponentCommand {
         
         await ctx.client.messages.write(
             // @ts-expect-error
-          JSON.parse(atob(dbread(db, "config", ctx.guildId).value))
+          JSON.parse(decryptData(dbread(db, "config", ctx.guildId).value))
             .loggingchannel,
           {
             content: `## <@${ctx.author.id}> HAS DELETED THIS SERVER'S DATA!\nSorry to see you all go @everyone... :sob:`,

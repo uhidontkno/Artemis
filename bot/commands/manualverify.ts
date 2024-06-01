@@ -9,6 +9,7 @@ import {
 import { MessageFlags } from "seyfert/lib/types";
 import { dbopen, dbread } from "../../components/sqllite";
 import { EmbedColors } from "seyfert/lib/common";
+import { decryptData } from "../../components/helper";
 @Declare({
   name: "manualverify",
   description: "Manually verify a user",
@@ -59,7 +60,7 @@ export default class ManualVerifyCommand extends Command {
 
     let roleId = JSON.parse(
       // @ts-expect-error
-      atob(dbread(db, "config", ctx.guildId || "-1").value),
+      decryptData(dbread(db, "config", ctx.guildId || "-1").value),
     ).verifyrole;
     // @ts-expect-error
     if (ctx.options.user.roles.keys.includes(roleId)) {
