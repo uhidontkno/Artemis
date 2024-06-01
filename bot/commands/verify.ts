@@ -23,10 +23,7 @@ function waitSignal(
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const id = setInterval(async () => {
-      if (counter > 120) {
-        clearInterval(id);
-        resolve("failed timeout");
-      }
+
       counter++;
       try {
         let _ = await fn();
@@ -99,6 +96,13 @@ export default class VerifyCommand extends Command {
         content: log,
       });
       let fn = async () => {
+        if (counter >= 120) {
+          signal = await Bun.file("signals.db.json").json();
+          // @ts-expect-error
+          signal["signals"][c] = "failed timeout";
+          Bun.write("signals.db.json",JSON.stringify(signal))
+          return "failed timeout";
+        }
         signal = await Bun.file("signals.db.json").json();
         // @ts-expect-error
         signal = signal["signals"][c];
@@ -123,7 +127,7 @@ export default class VerifyCommand extends Command {
       //s[c] = undefined;
       //Bun.write("signals.db.json",JSON.stringify(s))
       console.log(signal)
-      if (!signal || signal == "") {
+      if (!signal || signal == "" || signal == "failed timeout") {
         endVerification(c);
         // @ts-expect-error
         log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: ~~\`${c}\`~~\n* Verification failed with reason: User did not verify within 2 minutes`;
