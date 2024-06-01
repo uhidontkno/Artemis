@@ -113,7 +113,9 @@ export default class SetupServerCommand extends Command {
               actiononfail: ctx.options.actiononfail || "nothing",
               // @ts-expect-error
               loggingchannel: ctx.options.loggingchannel.id,
-            }),String(ctx.guildId)),
+            }),
+            String(ctx.guildId),
+          ),
         );
         await ctx.editOrReply({ embeds: [em], components: [] });
       });
@@ -155,7 +157,9 @@ export default class SetupServerCommand extends Command {
             actiononfail: ctx.options.actiononfail || "nothing",
             // @ts-expect-error
             loggingchannel: ctx.options.loggingchannel.id,
-          }),String(ctx.guildId)),
+          }),
+          String(ctx.guildId),
+        ),
       );
       await ctx.editOrReply({ embeds: [em], components: [] });
     }

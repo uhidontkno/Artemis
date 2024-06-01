@@ -76,9 +76,8 @@ export default class DeleteDataButton extends ComponentCommand {
       let db = dbopen("db.sql");
       // @ts-expect-error
       if (dbread(db, "config", ctx.guildId)) {
-        
         await ctx.client.messages.write(
-            // @ts-expect-error
+          // @ts-expect-error
           JSON.parse(decryptData(dbread(db, "config", ctx.guildId).value))
             .loggingchannel,
           {

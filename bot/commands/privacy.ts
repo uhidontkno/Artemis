@@ -17,10 +17,10 @@ import { decryptData } from "../../components/helper";
 export default class PrivacyCommand extends Command {
   async run(ctx: CommandContext) {
     let db = dbopen("db.sql");
-    
+
     let iph = dbread(db, "users", ctx.author.id)
-    // @ts-ignore
-      ? dbread(db, "users", ctx.author.id).value
+      ? // @ts-ignore
+        dbread(db, "users", ctx.author.id).value
       : "We don't have it.";
     let config = '{"error":"You never setup your server with us!"}';
     try {

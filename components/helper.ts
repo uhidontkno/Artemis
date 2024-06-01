@@ -84,11 +84,13 @@ export function aesEncrypt(
   return encrypted;
 }
 
-export function encryptData(serverdata:string,guildid:string) {
-  serverdata = btoa(serverdata)
+export function encryptData(serverdata: string, guildid: string) {
+  serverdata = btoa(serverdata);
   // @ts-expect-error
-  let key = (BigInt(process.env.BOT_OWNER) + BigInt(guildid)).toString(36).padEnd(16,"%")
-  return aesEncrypt("aes-128",serverdata,key)
+  let key = (BigInt(process.env.BOT_OWNER) + BigInt(guildid))
+    .toString(36)
+    .padEnd(16, "%");
+  return aesEncrypt("aes-128", serverdata, key);
 }
 
 export function aesDecrypt(
@@ -127,8 +129,10 @@ export function aesDecrypt(
   return decrypted;
 }
 
-export function decryptData(serverdata:string,guildid:string) {
+export function decryptData(serverdata: string, guildid: string) {
   // @ts-expect-error
-  let key = (BigInt(process.env.BOT_OWNER) + BigInt(guildid)).toString(36).padEnd(16,"%")
-  return atob(aesDecrypt("aes-128",serverdata,key))
+  let key = (BigInt(process.env.BOT_OWNER) + BigInt(guildid))
+    .toString(36)
+    .padEnd(16, "%");
+  return atob(aesDecrypt("aes-128", serverdata, key));
 }
