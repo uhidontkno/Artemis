@@ -60,6 +60,6 @@ export default createEvent({
         since: Date.now(),
         status: PresenceUpdateStatus.DoNotDisturb,
       });
-    },30000);
+    }, 30000);
   },
 });
