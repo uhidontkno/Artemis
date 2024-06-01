@@ -10,7 +10,7 @@ import {
   secureIPHash,
   startVerification,
 } from "../components/helper";
-import { botClientId } from "../components/helper";
+import { getBotId } from "../components/helper";
 import { nocache } from "elysia-nocache";
 import { compression } from "elysia-compression";
 import { ip } from "elysia-ip";
@@ -62,7 +62,7 @@ if (!process.env.DEPLOYMENT_URL) {
 
 app.use(rateLimit(config.ratelimit));
 app.use(staticPlugin({ assets: "server/static/", prefix: "/" }));
-app.use(nocache);
+//app.use(nocache);
 app.use(compression());
 app.use(ip());
 
@@ -91,12 +91,21 @@ app.get("/api/isvpn/:ip", ({ params }) => {
   return isVPN(params.ip);
 });
 
-app.get("/invite", ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${botClientId}&permissions=1374389716998&scope=bot+applications.commands`
+// elysia being a dick
+app.all("invite", async ({ set }) => {
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`
   return "a";
 });
-app.get("/invite/", ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${botClientId}&permissions=1374389716998&scope=bot+applications.commands`
+app.all("invite/",async ({ set }) => {
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`
+  return "a";
+});
+app.all("/invite",async ({ set }) => {
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`
+  return "a";
+});
+app.all("/invite/",async ({ set }) => {
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`
   return "a";
 });
 

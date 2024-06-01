@@ -180,3 +180,4 @@ db.sql
 testingdb.sql
 *.db.*
 *.sql.*
+clientId.txt

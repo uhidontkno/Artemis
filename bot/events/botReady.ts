@@ -2,11 +2,11 @@ import { createEvent } from "seyfert";
 import logger from "../../components/logger.ts";
 import { PresenceUpdateStatus } from "seyfert/lib/types/index";
 import { ActivityType } from "seyfert/lib/types/index";
-import { botClientId,initBotId } from "../../components/helper.ts";
+import { getBotId,initBotId } from "../../components/helper.ts";
 export default createEvent({
   data: { once: true, name: "botReady" },
   run(user, client) {
-    console.log(client.botId)
+    
     initBotId(BigInt(client.botId))
     logger.info(
       `${user.username}${user.username == "Artemis" ? "" : " (Artemis instance)"} is ready`,
