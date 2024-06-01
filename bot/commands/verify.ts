@@ -66,9 +66,10 @@ export default class VerifyCommand extends Command {
       return;
     }
 
-    let config = // @ts-expect-error
+    let config = 
       JSON.parse(
         decryptData(
+          // @ts-expect-error
           dbread(db, "config", ctx.guildId || "-1").value,
           String(ctx.guildId),
         ),

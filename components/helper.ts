@@ -90,7 +90,7 @@ export function encryptData(serverdata: string, guildid: string) {
   let key = (BigInt(process.env.BOT_OWNER) + BigInt(guildid))
     .toString(36)
     .padEnd(16, "%");
-  return aesEncrypt("aes-128", serverdata, key);
+  return aesEncrypt("aes-128-cbc", serverdata, key);
 }
 
 export function aesDecrypt(
