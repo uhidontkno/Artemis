@@ -121,8 +121,8 @@ export function aesDecrypt(
   mode = mode + "-cbc";
   const decipher = cgraphy.createDecipheriv(
     mode,
-    key.slice(0, keySize - 1),
-    iv.slice(0, ivSize - 1),
+    key.slice(0, keySize),
+    iv.slice(0, ivSize),
   );
   let decrypted = decipher.update(text, "hex", "utf8");
   decrypted += decipher.final("utf8");
