@@ -52,7 +52,7 @@ export function aesEncrypt(
   mode: string,
   text: string,
   key: string,
-  iv: string = "deblokDefaultIV",
+  iv: string = "12345DefaultIV",
 ): string {
   let keySize: number;
   let ivSize: number;
@@ -84,11 +84,18 @@ export function aesEncrypt(
   return encrypted;
 }
 
+export function encryptData(serverdata:string,guildid:string) {
+  serverdata = btoa(serverdata)
+  // @ts-expect-error
+  let key = (BigInt(process.env.BOT_OWNER) + BigInt(guildid)).toString(36).padEnd(16,"%")
+  return aesEncrypt("aes-128",serverdata,key)
+}
+
 export function aesDecrypt(
   mode: string,
   text: string,
   key: string,
-  iv: string = "deblokDefaultIV",
+  iv: string = "12345DefaultIV",
 ): string {
   let keySize: number;
   let ivSize: number;
@@ -118,4 +125,10 @@ export function aesDecrypt(
   let decrypted = decipher.update(text, "hex", "utf8");
   decrypted += decipher.final("utf8");
   return decrypted;
+}
+
+export function decryptData(serverdata:string,guildid:string) {
+  // @ts-expect-error
+  let key = (BigInt(process.env.BOT_OWNER) + BigInt(guildid)).toString(36).padEnd(16,"%")
+  return atob(aesDecrypt("aes-128",serverdata,key))
 }
