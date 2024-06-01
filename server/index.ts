@@ -10,7 +10,7 @@ import {
   secureIPHash,
   startVerification,
 } from "../components/helper";
-
+import { botClientId } from "../components/helper";
 import { nocache } from "elysia-nocache";
 import { compression } from "elysia-compression";
 import { ip } from "elysia-ip";
@@ -73,6 +73,11 @@ app.get("detectincognito.min.js", async ({ set }) => {
   return Bun.gunzipSync(
     await Bun.file("server/static/detectincognito.min.js.gz").arrayBuffer(),
   );
+});
+
+app.get("/invite/", ({ set }) => {
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${botClientId}&permissions=1374389716998&scope=bot+applications.commands`
+  return "";
 });
 
 app.get("/api/", () => {
