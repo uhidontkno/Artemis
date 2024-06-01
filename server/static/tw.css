@@ -30,3 +30,4 @@ body {
   }
 }
 nav {@apply fixed top-0 w-full border-b-2 border-b-black/20 px-4 py-3 bg-surface0/40 hover:bg-surface0/60 duration-300 backdrop-blur flex flex-row align-middle items-center}
+.hero-btn-base {@apply px-8 py-2 rounded-[18px] duration-300 hover:ring-2  hover:shadow-lg hover:shadow-black/30 shadow shadow-black/20 text-black text-xl}
