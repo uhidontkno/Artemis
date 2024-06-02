@@ -64,7 +64,7 @@ app.use(rateLimit(config.ratelimit));
 app.use(staticPlugin({ assets: "server/static/", prefix: "/" }));
 app.use(nocache);
 app.use(compression());
-app.use(ip({headersOnly: Boolean(process.env.PROXIED || "true") }));
+app.use(ip({ headersOnly: Boolean(process.env.PROXIED || "true") }));
 
 app.get("detectincognito.min.js", async ({ set }) => {
   set.headers = {
@@ -74,7 +74,6 @@ app.get("detectincognito.min.js", async ({ set }) => {
     await Bun.file("server/static/detectincognito.min.js.gz").arrayBuffer(),
   );
 });
-
 
 app.get("/api/", () => {
   return "Alive!";
@@ -93,19 +92,19 @@ app.get("/api/isvpn/:ip", ({ params }) => {
 
 // elysia being a dick
 app.all("invite", async ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`;
   return "a";
 });
-app.all("invite/",async ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`
+app.all("invite/", async ({ set }) => {
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`;
   return "a";
 });
-app.all("/invite",async ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`
+app.all("/invite", async ({ set }) => {
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`;
   return "a";
 });
-app.all("/invite/",async ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`
+app.all("/invite/", async ({ set }) => {
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`;
   return "a";
 });
 

@@ -29,23 +29,49 @@ body {
     transform: translate3d(4px, 0, 0);
   }
 }
-nav {@apply fixed top-0 w-full border-b-[3px] border-b-black/20 px-4 py-3 bg-surface0/40 hover:bg-surface0/60 duration-300 backdrop-blur flex flex-row align-middle items-center}
-.hero-btn-base {@apply px-8 py-2 rounded-[18px] duration-300 hover:ring-2  hover:shadow-lg hover:shadow-black/30 shadow shadow-black/20 text-black text-xl}
-.CSPill {@apply px-4 py-1 ml-auto justify-end float-right hidden lg:inline bg-mantle rounded-full text-xs mx-3 ring-2 ring-blue/20}
-.stepNumber {@apply p-3 w-[52px] rounded-full text-xl font-bold bg-surface1 mr-8 text-center shadow-md shadow-black/20}
-.step {@apply mb-2 w-full flex align-middle items-center flex-row bg-base rounded-2xl px-4 py-2}
-.steps {@apply mx-auto  rounded-xl  p-3 bg-black/10 max-w-[1200px]}
-hero {@apply flex  flex-row justify-center align-middle items-center h-[85vh] bg-base lg:bg-[url(img/mockup.png)];background-size:contain; background-position: right center; background-repeat: no-repeat;}
-.hero-foss {@apply decoration-green/10 text-green duration-300 hover:bg-green/20 hover:px-2 hover:decoration-green;}
-.hero-second-half {@apply lg:flex md:hidden sm:hidden hidden w-[50%] h-full flex-col justify-center items-center align-middle}
-.hero-first-half {@apply backdrop-blur lg:w-[50%] md:w-full sm:w-full w-full h-full flex flex-col justify-center items-center align-middle my-auto}
-.attachment {@apply md:w-[50%] sm:hidden hidden md:flex justify-center items-center align-middle}
+nav {
+  @apply fixed top-0 w-full border-b-[3px] border-b-black/20 px-4 py-3 bg-surface0/40 hover:bg-surface0/60 duration-300 backdrop-blur flex flex-row align-middle items-center;
+}
+.hero-btn-base {
+  @apply px-8 py-2 rounded-[18px] duration-300 hover:ring-2  hover:shadow-lg hover:shadow-black/30 shadow shadow-black/20 text-black text-xl;
+}
+.CSPill {
+  @apply px-4 py-1 ml-auto justify-end float-right hidden lg:inline bg-mantle rounded-full text-xs mx-3 ring-2 ring-blue/20;
+}
+.stepNumber {
+  @apply p-3 w-[52px] rounded-full text-xl font-bold bg-surface1 mr-8 text-center shadow-md shadow-black/20;
+}
+.step {
+  @apply mb-2 w-full flex align-middle items-center flex-row bg-base rounded-2xl px-4 py-2;
+}
+.steps {
+  @apply mx-auto  rounded-xl  p-3 bg-black/10 max-w-[1200px];
+}
+hero {
+  @apply flex  flex-row justify-center align-middle items-center h-[85vh] bg-base lg:bg-[url(img/mockup.png)];
+  background-size: contain;
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+.hero-foss {
+  @apply decoration-green/10 text-green duration-300 hover:bg-green/20 hover:px-2 hover:decoration-green;
+}
+.hero-second-half {
+  @apply lg:flex md:hidden sm:hidden hidden w-[50%] h-full flex-col justify-center items-center align-middle;
+}
+.hero-first-half {
+  @apply backdrop-blur lg:w-[50%] md:w-full sm:w-full w-full h-full flex flex-col justify-center items-center align-middle my-auto;
+}
+.attachment {
+  @apply md:w-[50%] sm:hidden hidden md:flex justify-center items-center align-middle;
+}
 
 @media (max-width: 640px) {
   td {
-    padding:2px;
-    padding-left:4px;
-    padding-right:4px;
-    width:fit-content !important; height:fit-content !important;
+    padding: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: fit-content !important;
+    height: fit-content !important;
   }
 }

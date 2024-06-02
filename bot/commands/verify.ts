@@ -24,8 +24,6 @@ function waitSignal(
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const id = setInterval(async () => {
-
-      
       try {
         let _ = await fn();
 
@@ -94,54 +92,60 @@ export default class VerifyCommand extends Command {
       return;
     } else {
       // @ts-expect-error
-      let createdAgo = (Math.round(Date.now() / 1000) - Math.round(ctx.member?.createdTimestamp / 1000))/3600
+      let createdAgo =
+        (Math.round(Date.now() / 1000) -
+          Math.round(ctx.member?.createdTimestamp / 1000)) /
+        3600;
       if (Number(minage || "72") > createdAgo) {
-              // @ts-expect-error
-      let log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* :warning: Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Automatically failed verification due to account age.`;
-      await ctx.client.messages.write(config.loggingchannel, {
-        content: log,
-      });
-      let formattedAge = ""
-      if (Number(minage || "24") < 24) {formattedAge = `${minage || "24"} hours`} else {
-        `${Math.round(Number(minage || "24")/24)} days`
-      }
-      let em = new Embed({
-        title: "Verification was unsuccessful.",
-        color: EmbedColors.Red,
-        description: `You have failed verification because your account to too young to verify. The server requires you to be on Discord for ${formattedAge}.`,
-      });
-      em.setFooter({
-        text: "Powered by Artemis | A FOSS Double Counter alternative.",
-      });
-      await ctx.editOrReply({ embeds: [em] });
-      return;
+        // @ts-expect-error
+        let log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* :warning: Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Automatically failed verification due to account age.`;
+        await ctx.client.messages.write(config.loggingchannel, {
+          content: log,
+        });
+        let formattedAge = "";
+        if (Number(minage || "24") < 24) {
+          formattedAge = `${minage || "24"} hours`;
+        } else {
+          `${Math.round(Number(minage || "24") / 24)} days`;
+        }
+        let em = new Embed({
+          title: "Verification was unsuccessful.",
+          color: EmbedColors.Red,
+          description: `You have failed verification because your account to too young to verify. The server requires you to be on Discord for ${formattedAge}.`,
+        });
+        em.setFooter({
+          text: "Powered by Artemis | A FOSS Double Counter alternative.",
+        });
+        await ctx.editOrReply({ embeds: [em] });
+        return;
       }
       c = await startVerification(ctx.author.id);
       // @ts-expect-error
       let log = `**Verification started** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: \`${c}\``;
-      let logMsg:Message;
+      let logMsg: Message;
       try {
-      logMsg = await ctx.client.messages.write(config.loggingchannel, {
-        content: log,
-      });
-    } catch {
-      let em = new Embed({
-        title: "Configuration Error",
-        color: EmbedColors.Red,
-        description: `I do not have permissions to send messages in the server's logging channel`,
-      });
-      em.setFooter({
-        text: "Powered by Artemis | A FOSS Double Counter alternative.",
-      });
-      await ctx.editOrReply({ embeds: [em] });return
-    }
+        logMsg = await ctx.client.messages.write(config.loggingchannel, {
+          content: log,
+        });
+      } catch {
+        let em = new Embed({
+          title: "Configuration Error",
+          color: EmbedColors.Red,
+          description: `I do not have permissions to send messages in the server's logging channel`,
+        });
+        em.setFooter({
+          text: "Powered by Artemis | A FOSS Double Counter alternative.",
+        });
+        await ctx.editOrReply({ embeds: [em] });
+        return;
+      }
       let fn = async () => {
         // @ts-expect-error
         if (counter[ctx.author.id] >= 120) {
           signal = await Bun.file("signals.db.json").json();
           // @ts-expect-error
           signal["signals"][c] = "failed timeout";
-          Bun.write("signals.db.json",JSON.stringify(signal))
+          Bun.write("signals.db.json", JSON.stringify(signal));
           return "failed timeout";
         }
         // @ts-expect-error
@@ -169,27 +173,28 @@ export default class VerifyCommand extends Command {
       //let s = await Bun.file("signals.db.json").json();
       //s[c] = undefined;
       //Bun.write("signals.db.json",JSON.stringify(s))
-      console.log(signal)
+      console.log(signal);
       if (!signal || signal == "" || signal == "failed timeout") {
         endVerification(c);
         // @ts-expect-error
         log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: ~~\`${c}\`~~\n* Verification failed with reason: User did not verify within 2 minutes`;
-        let logMsg:Message;
+        let logMsg: Message;
         try {
-        logMsg = await ctx.client.messages.write(config.loggingchannel, {
-          content: log,
-        });
-      } catch {
-        let em = new Embed({
-          title: "Configuration Error",
-          color: EmbedColors.Red,
-          description: `I do not have permissions to send messages in the server's logging channel`,
-        });
-        em.setFooter({
-          text: "Powered by Artemis | A FOSS Double Counter alternative.",
-        });
-        await ctx.editOrReply({ embeds: [em] });return
-      }
+          logMsg = await ctx.client.messages.write(config.loggingchannel, {
+            content: log,
+          });
+        } catch {
+          let em = new Embed({
+            title: "Configuration Error",
+            color: EmbedColors.Red,
+            description: `I do not have permissions to send messages in the server's logging channel`,
+          });
+          em.setFooter({
+            text: "Powered by Artemis | A FOSS Double Counter alternative.",
+          });
+          await ctx.editOrReply({ embeds: [em] });
+          return;
+        }
         await logMsg.edit({ content: log });
         let em = new Embed({
           title: "Verification timed out.",
@@ -200,8 +205,7 @@ export default class VerifyCommand extends Command {
           text: "Powered by Artemis | A FOSS Double Counter alternative.",
         });
         await ctx.editOrReply({ embeds: [em] });
-      } else
-      if (signal.startsWith("failed")) {
+      } else if (signal.startsWith("failed")) {
         endVerification(c);
         // @ts-expect-error
         log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: ~~\`${c}\`~~\n* Verification failed with reason: `;

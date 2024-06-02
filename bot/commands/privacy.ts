@@ -24,7 +24,6 @@ export default class PrivacyCommand extends Command {
       : "We don't have it.";
     let config = '{"error":"You never setup your server with us!"}';
     try {
-      
       config = decryptData(
         // @ts-ignore
         dbread(db, "config", ctx.guildId).value,

@@ -32,7 +32,8 @@ import { encryptData } from "../../components/helper";
     required: true,
   }),
   actiononfail: createStringOption({
-    description: "Action to take when the user fails to verify. (Default: nothing, recommended: 0,1, or 2)",
+    description:
+      "Action to take when the user fails to verify. (Default: nothing, recommended: 0,1, or 2)",
     choices: [
       { name: "Do Nothing [0]", value: "nothing" },
       { name: "Kick [1]", value: "kick" },
@@ -44,7 +45,8 @@ import { encryptData } from "../../components/helper";
     required: false,
   }),
   minimumaccountage: createStringOption({
-    description: "Minimum account age to verify. (Default: 3 days, recommended: 1 week)",
+    description:
+      "Minimum account age to verify. (Default: 3 days, recommended: 1 week)",
     choices: [
       { name: "1 Hour  ", value: "1" },
       { name: "6 Hours ", value: "6" },
@@ -112,34 +114,35 @@ export default class SetupServerCommand extends Command {
           description: "Set configuration for this server.",
         });
         try {
-        dbwrite(
-          db,
-          "config",
-          ctx.guildId || "-1",
+          dbwrite(
+            db,
+            "config",
+            ctx.guildId || "-1",
 
-          encryptData(
-            JSON.stringify({
-              // @ts-expect-error
-              verifyrole: ctx.options.verifyrole.id,
-              // @ts-expect-error
-              actiononfail: ctx.options.actiononfail || "nothing",
-              // @ts-expect-error
-              loggingchannel: ctx.options.loggingchannel.id,
-              // @ts-expect-error
-              minimumaccountage: ctx.options.minimumaccountage || "72",
-            }),
-            String(ctx.guildId),
-          ),
-        );
-        await ctx.editOrReply({ embeds: [em], components: [] });
-      } catch {
-        let em = new Embed({
-          title: "Setup Error",
-          color: EmbedColors.Red,
-          description: "Could not encrypt data.",
-        });
-        await ctx.editOrReply({ embeds: [em], components: [] });return
-      }
+            encryptData(
+              JSON.stringify({
+                // @ts-expect-error
+                verifyrole: ctx.options.verifyrole.id,
+                // @ts-expect-error
+                actiononfail: ctx.options.actiononfail || "nothing",
+                // @ts-expect-error
+                loggingchannel: ctx.options.loggingchannel.id,
+                // @ts-expect-error
+                minimumaccountage: ctx.options.minimumaccountage || "72",
+              }),
+              String(ctx.guildId),
+            ),
+          );
+          await ctx.editOrReply({ embeds: [em], components: [] });
+        } catch {
+          let em = new Embed({
+            title: "Setup Error",
+            color: EmbedColors.Red,
+            description: "Could not encrypt data.",
+          });
+          await ctx.editOrReply({ embeds: [em], components: [] });
+          return;
+        }
       });
       collector.run("cancel", async (i: ButtonInteraction) => {
         if (!i.isButton()) {
@@ -159,8 +162,7 @@ export default class SetupServerCommand extends Command {
           components: [],
         });
       });
-
-  } else {
+    } else {
       let em = new Embed({
         title: "Success",
         color: EmbedColors.Green,
@@ -194,7 +196,8 @@ export default class SetupServerCommand extends Command {
           color: EmbedColors.Red,
           description: "Could not encrypt data.",
         });
-        await ctx.editOrReply({ embeds: [em], components: [] });return
+        await ctx.editOrReply({ embeds: [em], components: [] });
+        return;
       }
     }
   }

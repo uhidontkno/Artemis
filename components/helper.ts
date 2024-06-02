@@ -8,12 +8,11 @@ import sqllite, {
   dbread,
 } from "../components/sqllite";
 
-
 export function initBotId(id: bigint) {
-  Bun.write("clientId.txt",String(id))
+  Bun.write("clientId.txt", String(id));
 }
 export async function getBotId() {
-  return BigInt(await (Bun.file("clientId.txt")).text());
+  return BigInt(await Bun.file("clientId.txt").text());
 }
 export async function isVPN(ip: string): Promise<boolean> {
   let ranges = Bun.file("components/vpn_ips.txt");
