@@ -13,7 +13,7 @@
     </nav>
     <div class="w-full h-[60px]"></div>
     <hero
-      class="flex  flex-row justify-center align-middle items-center h-[85vh] bg-base lg:bg-[url(img/mockup.png)]" style="background-size:contain; background-position: right center; background-repeat: no-repeat;"
+       style="background-size:contain; background-position: right center; background-repeat: no-repeat;"
     >
       <div
         class="backdrop-blur lg:w-[50%] md:w-full sm:w-full w-full h-full flex flex-col justify-center items-center align-middle my-auto"
@@ -75,6 +75,30 @@
     <p class="text-center  mx-auto md:px-16 sm:px-12 px-8 lg:px-0 max-w-[640px]">
       Get a quick insight about users who verify with Artemis with our detailed logs. If a user has failed to verify, Artemis will log it so server moderators with how the user failed to verify so server moderators can take action accordingly if we detect someone may be malicious. You can punish users if they fail to verify automatically in Artemis settings.
     </p>
+      </div>
+    </div>
+    <br><br><br>
+    <h2 class="text-3xl font-bold text-center my-12">In <span class="text-green">3 seconds...</span></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="stepNumber">1.</div>
+        First and foremost, The user is checked if they are spoofing their user agent
+        <span class="CSPill">CLIENT SIDE</span>
+      </div>
+      <div class="step">
+        <div class="stepNumber">2.</div>
+        Secondly, the user is checked if they are on a VPN, checking the user's IP address against a dataset of 77 thousand IPs
+        <span class="CSPill">SERVER SIDE</span>
+      </div>
+      <div class="step">
+        <div class="stepNumber">3.</div>
+        Then, The user is first checked if they are in Incognito Mode
+        <span class="CSPill">CLIENT SIDE</span>
+      </div>
+      <div class="step">
+        <div class="stepNumber">4.</div>
+        Finally, the user's IP and user ID will be checked against our database to see if we suspect the user of using an alt.
+        <span class="CSPill">SERVER SIDE</span>
       </div>
     </div>
     <br><br><br>
