@@ -94,7 +94,7 @@ export default class VerifyCommand extends Command {
     } else {
       // @ts-expect-error
       let createdAgo = (Math.round(Date.now() / 1000) - Math.round(ctx.member?.createdTimestamp / 1000))/3600
-      if (Number(minage || "24") < createdAgo) {
+      if (Number(minage || "24") > createdAgo) {
               // @ts-expect-error
       let log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* :warning: Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Automatically failed verification due to account age.`;
       await ctx.client.messages.write(config.loggingchannel, {
@@ -107,7 +107,7 @@ export default class VerifyCommand extends Command {
       let em = new Embed({
         title: "Verification was unsuccessful.",
         color: EmbedColors.Red,
-        description: `You have failed verification because your account to too young to verify. The server requires you to be on Discord for ${minage}.`,
+        description: `You have failed verification because your account to too young to verify. The server requires you to be on Discord for ${formattedAge}.`,
       });
       em.setFooter({
         text: "Powered by Artemis | A FOSS Double Counter alternative.",
