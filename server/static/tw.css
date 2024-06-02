@@ -40,3 +40,12 @@ hero {@apply flex  flex-row justify-center align-middle items-center h-[85vh] bg
 .hero-second-half {@apply lg:flex md:hidden sm:hidden hidden w-[50%] h-full flex-col justify-center items-center align-middle}
 .hero-first-half {@apply backdrop-blur lg:w-[50%] md:w-full sm:w-full w-full h-full flex flex-col justify-center items-center align-middle my-auto}
 .attachment {@apply md:w-[50%] sm:hidden hidden md:flex justify-center items-center align-middle}
+
+@media (max-width: 640px) {
+  td {
+    padding:2px !important;
+    padding-left:4px !important;
+    padding-right:4px !important;
+    width:fit-content; height:fit-content;
+  }
+}
