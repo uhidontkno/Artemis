@@ -71,21 +71,26 @@ setTimeout(async () => {
   setTimeout(async () => {
     // user agent check
     let ua = window.navigator.userAgent;
-    if (!ua.includes("Mobile") && !ua.includes("Phone") && !ua.includes("Tablet")  && !ua.includes("Safari")) {
     if (
-      // we're on webkit
-      ((window.webkitCancelAnimationFrame !== undefined ||
-        Math.hypot(-24.42, -50.519999999999925) == 56.1124478168614) &&
-        (!ua.includes("Chrome/") || !ua.includes("AppleWebKit/"))) ||
-      // we're on gecko
-      ((window.webkitCancelAnimationFrame == undefined ||
-        Math.hypot(-24.42, -50.519999999999925) != 56.1124478168614) &&
-        (!ua.includes("Firefox/") || !ua.includes("Gecko/")))
+      !ua.includes("Mobile") &&
+      !ua.includes("Phone") &&
+      !ua.includes("Tablet") &&
+      !ua.includes("Safari")
     ) {
-      failVerif("Your user agent seems to be spoofed.");
-      return;
+      if (
+        // we're on webkit
+        ((window.webkitCancelAnimationFrame !== undefined ||
+          Math.hypot(-24.42, -50.519999999999925) == 56.1124478168614) &&
+          (!ua.includes("Chrome/") || !ua.includes("AppleWebKit/"))) ||
+        // we're on gecko
+        ((window.webkitCancelAnimationFrame == undefined ||
+          Math.hypot(-24.42, -50.519999999999925) != 56.1124478168614) &&
+          (!ua.includes("Firefox/") || !ua.includes("Gecko/")))
+      ) {
+        failVerif("Your user agent seems to be spoofed.");
+        return;
+      }
     }
-  }
     // vpn check
     let res = await fetch("/api/isvpn");
     if ((await res.text()) == "true") {

@@ -91,7 +91,6 @@ export default class VerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em], flags: MessageFlags.Ephemeral });
       return;
     } else {
-      
       let createdAgo =
         (Math.round(Date.now() / 1000) -
           // @ts-expect-error
