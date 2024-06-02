@@ -400,8 +400,12 @@ export default class VerifyCommand extends Command {
           log = log + `\n* Role **given** to user!`;
           await logMsg.edit({ content: log });
         } catch {
-          // @ts-expect-error
-          await user.roles.add(roleId);
+          let em = new Embed({
+            title: "Configuration Error",
+            color: EmbedColors.Red,
+            description: `You have passed verification, but I could not give you your role because I do not have permission to do so.`,
+          });
+          await ctx.editOrReply({ embeds: [em] });
           log = log + `\n* Role could **not** be given to user!`;
           await logMsg.edit({ content: log });
         }

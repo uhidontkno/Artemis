@@ -111,7 +111,7 @@ export default class SetupServerCommand extends Command {
           color: EmbedColors.Green,
           description: "Set configuration for this server.",
         });
-
+        try {
         dbwrite(
           db,
           "config",
@@ -132,6 +132,14 @@ export default class SetupServerCommand extends Command {
           ),
         );
         await ctx.editOrReply({ embeds: [em], components: [] });
+      } catch {
+        let em = new Embed({
+          title: "Setup Error",
+          color: EmbedColors.Red,
+          description: "Could not encrypt data.",
+        });
+        await ctx.editOrReply({ embeds: [em], components: [] });return
+      }
       });
       collector.run("cancel", async (i: ButtonInteraction) => {
         if (!i.isButton()) {
@@ -151,33 +159,43 @@ export default class SetupServerCommand extends Command {
           components: [],
         });
       });
-    } else {
+
+  } else {
       let em = new Embed({
         title: "Success",
         color: EmbedColors.Green,
         description: "Set configuration for this server.",
       });
 
-      dbwrite(
-        db,
-        "config",
-        ctx.guildId || "-1",
+      try {
+        dbwrite(
+          db,
+          "config",
+          ctx.guildId || "-1",
 
-        encryptData(
-          JSON.stringify({
-            // @ts-expect-error
-            verifyrole: ctx.options.verifyrole.id,
-            // @ts-expect-error
-            actiononfail: ctx.options.actiononfail || "nothing",
-            // @ts-expect-error
-            loggingchannel: ctx.options.loggingchannel.id,
-            // @ts-expect-error
-            minimumaccountage: ctx.options.minimumaccountage || "72",
-          }),
-          String(ctx.guildId),
-        ),
-      );
-      await ctx.editOrReply({ embeds: [em], components: [] });
+          encryptData(
+            JSON.stringify({
+              // @ts-expect-error
+              verifyrole: ctx.options.verifyrole.id,
+              // @ts-expect-error
+              actiononfail: ctx.options.actiononfail || "nothing",
+              // @ts-expect-error
+              loggingchannel: ctx.options.loggingchannel.id,
+              // @ts-expect-error
+              minimumaccountage: ctx.options.minimumaccountage || "72",
+            }),
+            String(ctx.guildId),
+          ),
+        );
+        await ctx.editOrReply({ embeds: [em], components: [] });
+      } catch {
+        let em = new Embed({
+          title: "Setup Error",
+          color: EmbedColors.Red,
+          description: "Could not encrypt data.",
+        });
+        await ctx.editOrReply({ embeds: [em], components: [] });return
+      }
     }
   }
 }
