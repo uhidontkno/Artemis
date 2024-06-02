@@ -9,6 +9,7 @@ import {
 import { MessageFlags } from "seyfert/lib/types";
 import { EmbedColors } from "seyfert/lib/common";
 import { dbopen, dbread } from "../../components/sqllite";
+import { Message } from "seyfert";
 import {
   decryptData,
   endVerification,
@@ -118,9 +119,22 @@ export default class VerifyCommand extends Command {
       c = await startVerification(ctx.author.id);
       // @ts-expect-error
       let log = `**Verification started** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: \`${c}\``;
-      let logMsg = await ctx.client.messages.write(config.loggingchannel, {
+      let logMsg:Message;
+      try {
+      logMsg = await ctx.client.messages.write(config.loggingchannel, {
         content: log,
       });
+    } catch {
+      let em = new Embed({
+        title: "Configuration Error",
+        color: EmbedColors.Red,
+        description: `I do not have permissions to send messages in the server's logging channel`,
+      });
+      em.setFooter({
+        text: "Powered by Artemis | A FOSS Double Counter alternative.",
+      });
+      await ctx.editOrReply({ embeds: [em] });return
+    }
       let fn = async () => {
         // @ts-expect-error
         if (counter[ctx.author.id] >= 120) {
@@ -160,6 +174,22 @@ export default class VerifyCommand extends Command {
         endVerification(c);
         // @ts-expect-error
         log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: ~~\`${c}\`~~\n* Verification failed with reason: User did not verify within 2 minutes`;
+        let logMsg:Message;
+        try {
+        logMsg = await ctx.client.messages.write(config.loggingchannel, {
+          content: log,
+        });
+      } catch {
+        let em = new Embed({
+          title: "Configuration Error",
+          color: EmbedColors.Red,
+          description: `I do not have permissions to send messages in the server's logging channel`,
+        });
+        em.setFooter({
+          text: "Powered by Artemis | A FOSS Double Counter alternative.",
+        });
+        await ctx.editOrReply({ embeds: [em] });return
+      }
         await logMsg.edit({ content: log });
         let em = new Embed({
           title: "Verification timed out.",
