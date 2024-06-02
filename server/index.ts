@@ -64,7 +64,7 @@ app.use(rateLimit(config.ratelimit));
 app.use(staticPlugin({ assets: "server/static/", prefix: "/" }));
 app.use(nocache);
 app.use(compression());
-app.use(ip());
+app.use(ip({ checkHeaders: ["cf-connecting-ip","x-forwarded-for","x-real-ip"] }));
 
 app.get("detectincognito.min.js", async ({ set }) => {
   set.headers = {
