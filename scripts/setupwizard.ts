@@ -75,7 +75,26 @@ console.log(`${c.gray("▪")} 💾 Copying example env file...`)
 copyFile("example.env",".env")
 await timeout(100)
 console.write(ansi.cursorMove(0),ansi.cursorUp(),ansi.eraseEndLine)
+let platform = ""
+let friendlyPlatform = "N/A"
+if (process.platform == "win32") {
+    platform = "windows"
+    friendlyPlatform = "Windows"
+} else if (process.platform == "linux") {
+    platform = "linux"
+    friendlyPlatform = "Linux"
+} else {
+    platform = "unix"
+    friendlyPlatform = "Other Unix-based OS"
+}
+
+console.log(`${c.gray("▪ 🖥️")}  Detected ${friendlyPlatform}`)
+console.log(`${c.gray("|  ")}  You should use the ${(platform == "windows") ? "PowerShell script (start.ps1)" : "Bash script (start.sh)"} script to start Artemis.`)
+await timeout(100)
 let token = await secretPrompt(`${c.gray("▪ 🙈")} What is your Discord Bot's token? `);
+console.write(ansi.cursorMove(0),ansi.cursorUp(),ansi.eraseEndLine)
+console.log(`${c.gray("▪ 🙈")} What is your Discord Bot's token? ${c.gray("**********************")}`)
 if (token.trim() == "") {
     console.log(`${c.gray("| ❌")} ${c.red("You did not enter a Discord Bot token.")}`); process.exit(1)
 }
+
