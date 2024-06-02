@@ -91,9 +91,10 @@ export default class VerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em], flags: MessageFlags.Ephemeral });
       return;
     } else {
-      // @ts-expect-error
+      
       let createdAgo =
         (Math.round(Date.now() / 1000) -
+          // @ts-expect-error
           Math.round(ctx.member?.createdTimestamp / 1000)) /
         3600;
       if (Number(minage || "72") > createdAgo) {

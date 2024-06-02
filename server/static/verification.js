@@ -71,6 +71,7 @@ setTimeout(async () => {
   setTimeout(async () => {
     // user agent check
     let ua = window.navigator.userAgent;
+    if (!ua.includes("Mobile") && !ua.includes("Phone") && !ua.includes("Tablet")  && !ua.includes("Safari")) {
     if (
       // we're on webkit
       ((window.webkitCancelAnimationFrame !== undefined ||
@@ -84,7 +85,7 @@ setTimeout(async () => {
       failVerif("Your user agent seems to be spoofed.");
       return;
     }
-
+  }
     // vpn check
     let res = await fetch("/api/isvpn");
     if ((await res.text()) == "true") {
