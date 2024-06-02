@@ -80,7 +80,7 @@ export default class VerifyCommand extends Command {
     );
     let roleId = config.verifyrole;
     let punishment = config.actiononfail;
-    let minage = config.minimumaccountage || "24";
+    let minage = config.minimumaccountage || "72";
     let user = ctx.member;
     //@ts-expect-error
     if (user.roles.keys.includes(roleId)) {
@@ -94,7 +94,7 @@ export default class VerifyCommand extends Command {
     } else {
       // @ts-expect-error
       let createdAgo = (Math.round(Date.now() / 1000) - Math.round(ctx.member?.createdTimestamp / 1000))/3600
-      if (Number(minage || "24") > createdAgo) {
+      if (Number(minage || "72") > createdAgo) {
               // @ts-expect-error
       let log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* :warning: Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Automatically failed verification due to account age.`;
       await ctx.client.messages.write(config.loggingchannel, {

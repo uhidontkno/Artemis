@@ -171,6 +171,8 @@ export default class SetupServerCommand extends Command {
             actiononfail: ctx.options.actiononfail || "nothing",
             // @ts-expect-error
             loggingchannel: ctx.options.loggingchannel.id,
+            // @ts-expect-error
+            minimumaccountage: ctx.options.minimumaccountage || "72",
           }),
           String(ctx.guildId),
         ),
