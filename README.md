@@ -2,7 +2,7 @@
 
 Discord bot for steering alt accounts away. Alternative to Double Counter.
 
-**Links**:
+**Links**: <br>
 Website: https://artemis.rare1k.dev <br>
 Invite:  https://artemis.rare1k.dev/invite <br>
 Privacy Policy: Run `/privacy` <br>
