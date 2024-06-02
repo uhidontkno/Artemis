@@ -48,15 +48,15 @@ export default class VerifyCommand extends Command {
   async run(ctx: CommandContext) {
     // @ts-expect-error
     counter[ctx.author.id] = 0;
-    if (ctx.author.bot || ctx.author.id == ctx.guild()?.ownerId) {
-      let em = new Embed({
-        title: "Error",
-        color: EmbedColors.Red,
-        description: "Server owners and bots cannot use this command.",
-      });
-      await ctx.editOrReply({ embeds: [em], flags: MessageFlags.Ephemeral });
-      return;
-    }
+    //if (ctx.author.bot || ctx.author.id == ctx.guild()?.ownerId) {
+    //  let em = new Embed({
+    //    title: "Error",
+    //    color: EmbedColors.Red,
+    //    description: "Server owners and bots cannot use this command.",
+    //  });
+    //  await ctx.editOrReply({ embeds: [em], flags: MessageFlags.Ephemeral });
+    //  return;
+    //}
 
     await ctx.deferReply(true);
     let db = dbopen("db.sql");
