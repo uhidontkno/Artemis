@@ -35,4 +35,8 @@ nav {@apply fixed top-0 w-full border-b-[3px] border-b-black/20 px-4 py-3 bg-sur
 .stepNumber {@apply p-3 w-[52px] rounded-full text-xl font-bold bg-surface1 mr-8 text-center shadow-md shadow-black/20}
 .step {@apply mb-2 w-full flex align-middle items-center flex-row bg-base rounded-2xl px-4 py-2}
 .steps {@apply mx-auto  rounded-xl  p-3 bg-black/10 max-w-[1200px]}
-hero {@apply flex  flex-row justify-center align-middle items-center h-[85vh] bg-base lg:bg-[url(img/mockup.png)]}
+hero {@apply flex  flex-row justify-center align-middle items-center h-[85vh] bg-base lg:bg-[url(img/mockup.png)];background-size:contain; background-position: right center; background-repeat: no-repeat;}
+.hero-foss {@apply decoration-green/10 text-green duration-300 hover:bg-green/20 hover:px-2 hover:decoration-green;}
+.hero-second-half {@apply lg:flex md:hidden sm:hidden hidden w-[50%] h-full flex-col justify-center items-center align-middle}
+.hero-first-half {@apply backdrop-blur lg:w-[50%] md:w-full sm:w-full w-full h-full flex flex-col justify-center items-center align-middle my-auto}
+.attachment {@apply md:w-[50%] sm:hidden hidden md:flex justify-center items-center align-middle}
