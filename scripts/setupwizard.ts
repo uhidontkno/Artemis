@@ -56,6 +56,7 @@ async function prompt(ask:string) {
     const rl = readline.createInterface({ input, output });
     let res = await rl.question(ask);
     rl.close();
+    console.write(ansi.cursorMove(0),ansi.cursorUp())
     return res;
 }
 
@@ -71,10 +72,7 @@ if (process.argv0 != "bun") {
     process.exit(1)
 }
 
-console.log(`${c.gray("▪")} 💾 Copying example env file...`)
-copyFile("example.env",".env")
-await timeout(100)
-console.write(ansi.cursorMove(0),ansi.cursorUp(),ansi.eraseEndLine)
+
 let platform = ""
 let friendlyPlatform = "N/A"
 if (process.platform == "win32") {
@@ -87,14 +85,54 @@ if (process.platform == "win32") {
     platform = "unix"
     friendlyPlatform = "Other Unix-based OS"
 }
-
 console.log(`${c.gray("▪ 🖥️")}  Detected ${friendlyPlatform}`)
 console.log(`${c.gray("|  ")}  You should use the ${(platform == "windows") ? "PowerShell script (start.ps1)" : "Bash script (start.sh)"} script to start Artemis.`)
 await timeout(100)
 let token = await secretPrompt(`${c.gray("▪ 🙈")} What is your Discord Bot's token? `);
 console.write(ansi.cursorMove(0),ansi.cursorUp(),ansi.eraseEndLine)
-console.log(`${c.gray("▪ 🙈")} What is your Discord Bot's token? ${c.gray("**********************")}`)
+console.log(`${c.blue("▪ 🙈")} What is your Discord Bot's token? ${c.gray("**********************")}`)
 if (token.trim() == "") {
     console.log(`${c.gray("| ❌")} ${c.red("You did not enter a Discord Bot token.")}`); process.exit(1)
 }
-
+let ownerId = await prompt(`${c.gray("▪ ❓")} What is your Discord User ID? `);
+try {
+BigInt(ownerId)
+} catch {
+    console.log(`${c.gray("| ❌")} ${c.red("You did not enter a Discord User ID")}`); process.exit(1)
+}
+let deploymentUrl = await prompt(`${c.gray("▪ 🌐")} What URL should users access to verify? `);
+try {
+    new URL(deploymentUrl)
+} catch {
+    console.log(`${c.gray("| ❌")} ${c.red("You did not enter a valid URL")}`); process.exit(1)
+}
+let proxied:any = await prompt(`${c.gray("▪ 🌐")} Are you putting a proxy behind Artemis's frontend? ${c.gray("[y/n]")} `);
+if (["y","1"].includes(proxied.toLowerCase())) {proxied = 1} else
+if (["n","0"].includes(proxied.toLowerCase())) {proxied = 0} else {
+    console.log(`${c.gray("| ❌")} ${c.red("Not a valid choice")}`); process.exit(1)
+}
+if (proxied == 1) {
+    console.write(ansi.cursorMove(0),ansi.cursorUp(),ansi.eraseEndLine)
+    console.log(`${c.blue("▪ 🌐")} Are you putting a proxy behind Artemis's frontend? Yes`);
+} else {
+    console.write(ansi.cursorMove(0),ansi.cursorUp(),ansi.eraseEndLine)
+    console.log(`${c.blue("▪ 🌐")} Are you putting a proxy behind Artemis's frontend? No`);
+}
+await timeout(300)
+console.write(ansi.cursorDown(2));
+console.write(ansi.cursorUp(8));
+for (let i = 1; i < 8; i++) {
+    console.write(ansi.cursorMove(0),ansi.eraseEndLine,ansi.cursorDown())
+}
+console.write(ansi.cursorUp(7),ansi.cursorMove(0))
+console.log(`${c.gray("▪")} ✍️  Writing changes to .env`)
+Bun.write(".env",`
+BOT_TOKEN=${token}
+BOT_OWNER=${ownerId}
+DEPLOYMENT_URL=${deploymentUrl}
+PROXIED=${proxied}
+`)
+await timeout(200)
+console.write(ansi.cursorMove(0),ansi.cursorUp(),ansi.eraseEndLine)
+console.log(`${c.gray("▪")} ✍️  Done writing changes to .env`)
+console.log(`${c.green("▪")} ✅ Finished setting up Artemis!`)
