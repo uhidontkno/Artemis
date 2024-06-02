@@ -90,7 +90,7 @@ if (process.platform == "win32") {
 }
 console.log(`${c.gray("▪ 🖥️")}  Detected ${friendlyPlatform}`);
 console.log(
-  `${c.gray("|  ")}  You should use the ${platform == "windows" ? "PowerShell script (start.ps1)" : "Bash script (start.sh)"} script to start Artemis.`,
+  `${c.gray("|  ")}  You should use the ${platform == "windows" ? "PowerShell script (start.ps1)" : "Bash script (start.sh)"} to start Artemis.`,
 );
 await timeout(100);
 let token = await secretPrompt(
@@ -167,3 +167,6 @@ await timeout(200);
 console.write(ansi.cursorMove(0), ansi.cursorUp(), ansi.eraseEndLine);
 console.log(`${c.gray("▪")} ✍️  Done writing changes to .env`);
 console.log(`${c.green("▪")} ✅ Finished setting up Artemis!`);
+console.log(
+    `${c.green("|  ")}  Run ${c.blue(platform == "windows" ? "bun start:windows" : "bun start")} to start Atermis`,
+  );
