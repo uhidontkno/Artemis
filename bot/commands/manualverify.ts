@@ -44,7 +44,7 @@ export default class ManualVerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em] });
       return;
     }
-
+    
     await ctx.deferReply();
     let db = dbopen("db.sql");
     if (!dbread(db, "config", ctx.guildId || "-1")) {

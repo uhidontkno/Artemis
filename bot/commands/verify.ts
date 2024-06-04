@@ -80,6 +80,7 @@ export default class VerifyCommand extends Command {
     let roleId = config.verifyrole;
     let punishment = config.actiononfail;
     let minage = config.minimumaccountage || "72";
+    let verifMode = config.verification || 1;
     let user = ctx.member;
     //@ts-expect-error
     if (user.roles.keys.includes(roleId)) {
@@ -118,6 +119,60 @@ export default class VerifyCommand extends Command {
         });
         await ctx.editOrReply({ embeds: [em] });
         return;
+      }
+      if (verifMode == 0) {
+        // @ts-expect-error
+        let log = `**Verification ended** for user \`${ctx.author.username}\` (\`${ctx.author.id}\`)\n* Joined server: <t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.joinedTimestamp / 1000)}:f>)\n* Joined Discord: <t:${Math.round(ctx.member?.createdTimestamp / 1000)}:R> (<t:${Math.round(ctx.member?.createdTimestamp / 1000)}:f>)\n* Code: ~~\`${c}\`~~\n* Verification passed automatically because verification is off.`;
+        let em = new Embed({
+          title: "Verification was successful!",
+          color: EmbedColors.Green,
+          description: "",
+        });
+        let logMsg: Message;
+      try {
+        logMsg = await ctx.client.messages.write(config.loggingchannel, {
+          content: log,
+        });
+      } catch {
+        let em = new Embed({
+          title: "Configuration Error",
+          color: EmbedColors.Red,
+          description: `I do not have permissions to send messages in the server's logging channel`,
+        });
+        em.setFooter({
+          text: "Powered by Artemis | A FOSS Double Counter alternative.",
+        });
+        await ctx.editOrReply({ embeds: [em] });
+        return;
+      }
+        em.setFooter({
+          text: "Powered by Artemis | A FOSS Double Counter alternative.",
+        });
+        await ctx.editOrReply({ embeds: [em] });
+        await logMsg.edit({ content: log });
+        try {
+          // @ts-expect-error
+          await user.roles.add(roleId);
+          log = log + `\n* Role **given** to user!`;
+          await logMsg.edit({ content: log });
+        } catch {
+          let em = new Embed({
+            title: "Configuration Error",
+            color: EmbedColors.Red,
+            description: `You have passed verification, but I could not give you your role because I do not have permission to do so.`,
+          });
+          await ctx.editOrReply({ embeds: [em] });
+          log = log + `\n* Role could **not** be given to user!`;
+          await logMsg.edit({ content: log });
+        }
+        return;
+      } else if (verifMode == -1) {
+        let em = new Embed({
+          title: "Verification is disabled.",
+          color: EmbedColors.Red,
+          description: `Your server admin has disabled verification.`,
+        });
+        await ctx.editOrReply({ embeds: [em] });
       }
       c = await startVerification(ctx.author.id);
       // @ts-expect-error
