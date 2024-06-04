@@ -91,20 +91,20 @@ app.get("/api/isvpn/:ip", ({ params }) => {
 });
 
 // elysia being a dick
-app.all("invite", async ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`;
+app.all("invite", async ({ set }) => { 
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374658021390&scope=bot+applications.commands`;
   return "a";
 });
 app.all("invite/", async ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`;
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374658021390&scope=bot+applications.commands`;
   return "a";
 });
 app.all("/invite", async ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`;
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374658021390&scope=bot+applications.commands`;
   return "a";
 });
 app.all("/invite/", async ({ set }) => {
-  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374389716998&scope=bot+applications.commands`;
+  set.redirect = `https://discord.com/oauth2/authorize?client_id=${await getBotId()}&permissions=1374658021390&scope=bot+applications.commands`;
   return "a";
 });
 
