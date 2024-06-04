@@ -168,5 +168,5 @@ console.write(ansi.cursorMove(0), ansi.cursorUp(), ansi.eraseEndLine);
 console.log(`${c.gray("▪")} ✍️  Done writing changes to .env`);
 console.log(`${c.green("▪")} ✅ Finished setting up Artemis!`);
 console.log(
-    `${c.green("|  ")}  Run ${c.blue(platform == "windows" ? "bun start:windows" : "bun start")} to start Atermis`,
-  );
+  `${c.green("|  ")}  Run ${c.blue(platform == "windows" ? "bun start:windows" : "bun start")} to start Atermis`,
+);

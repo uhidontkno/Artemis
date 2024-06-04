@@ -129,22 +129,22 @@ export default class VerifyCommand extends Command {
           description: "",
         });
         let logMsg: Message;
-      try {
-        logMsg = await ctx.client.messages.write(config.loggingchannel, {
-          content: log,
-        });
-      } catch {
-        let em = new Embed({
-          title: "Configuration Error",
-          color: EmbedColors.Red,
-          description: `I do not have permissions to send messages in the server's logging channel`,
-        });
-        em.setFooter({
-          text: "Powered by Artemis | A FOSS Double Counter alternative.",
-        });
-        await ctx.editOrReply({ embeds: [em] });
-        return;
-      }
+        try {
+          logMsg = await ctx.client.messages.write(config.loggingchannel, {
+            content: log,
+          });
+        } catch {
+          let em = new Embed({
+            title: "Configuration Error",
+            color: EmbedColors.Red,
+            description: `I do not have permissions to send messages in the server's logging channel`,
+          });
+          em.setFooter({
+            text: "Powered by Artemis | A FOSS Double Counter alternative.",
+          });
+          await ctx.editOrReply({ embeds: [em] });
+          return;
+        }
         em.setFooter({
           text: "Powered by Artemis | A FOSS Double Counter alternative.",
         });
