@@ -1,3 +1,2 @@
-bun run bot/index.ts &
-bun run server/index.ts &
-read -r -d '' _
+while :; bun run bot/index.ts; echo "Bot crashed! Restarting..."; sleep 1; done &
+while :; bun run server/index.ts; echo "Server crashed! Restarting..."; sleep 1; done &

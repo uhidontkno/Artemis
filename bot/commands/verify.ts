@@ -81,6 +81,7 @@ export default class VerifyCommand extends Command {
     let punishment = config.actiononfail;
     let minage = config.minimumaccountage || "72";
     let verifMode = config.verification || 1;
+    
     let user = ctx.member;
     //@ts-expect-error
     if (user.roles.keys.includes(roleId)) {
