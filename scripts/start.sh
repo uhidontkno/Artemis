@@ -1,2 +1,11 @@
-while :; bun run bot/index.ts; echo "Bot crashed! Restarting..."; sleep 1; done &
-while :; bun run server/index.ts; echo "Server crashed! Restarting..."; sleep 1; done &
+echo "
+while [ true ]; do
+bun run bot/index.ts
+sleep 1
+done " | bash &
+
+echo "
+while [ true ]; do
+bun run server/index.ts
+sleep 1
+done " | bash
