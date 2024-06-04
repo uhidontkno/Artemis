@@ -57,7 +57,7 @@ export default class ManualVerifyCommand extends Command {
       await ctx.editOrReply({ embeds: [em] });
       return;
     }
-
+    try {
     let roleId = JSON.parse(
       // @ts-expect-error
       decryptData(dbread(db, "config", ctx.guildId || "-1").value),
@@ -81,5 +81,15 @@ export default class ManualVerifyCommand extends Command {
       description: `Gave user <@${ctx.options.user.id}> (\`${ctx.options.user.username}\`) role <@&${roleId}>`,
     });
     ctx.editOrReply({ embeds: [em] });
+  } catch (e) {
+    let em = new Embed({
+      title: "Error",
+      color: EmbedColors.Red,
+      description:
+        `\`\`\`\n${e}\`\`\`\n`,
+    });
+    await ctx.editOrReply({ embeds: [em] });
+    return;
+  }
   }
 }
