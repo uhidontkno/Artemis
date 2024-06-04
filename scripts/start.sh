@@ -9,3 +9,5 @@ while [ true ]; do
 bun run server/index.ts
 sleep 1
 done " | bash &
+
+sleep 32767h
