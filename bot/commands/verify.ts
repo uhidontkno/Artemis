@@ -174,6 +174,7 @@ export default class VerifyCommand extends Command {
           description: `Your server admin has disabled verification.`,
         });
         await ctx.editOrReply({ embeds: [em] });
+        return;
       }
       c = await startVerification(ctx.author.id);
       // @ts-expect-error
