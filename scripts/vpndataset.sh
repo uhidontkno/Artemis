@@ -15,17 +15,19 @@ curl -o /tmp/bl.ipv4_dataset2.txt https://raw.githubusercontent.com/youngjun-cha
  curl -o /tmp/bl.firehol.datacenters.txt https://iplists.firehol.org/files/datacenters.netset               2> /dev/null >/dev/null
  curl -o /tmp/bl.filehol.proxylists.txt  https://iplists.firehol.org/files/proxylists.ipset                 2> /dev/null >/dev/null
 
- ## FireHOL Tor
- curl -o /tmp/bl.firehol.tor_exits.txt   https://iplists.firehol.org/files/tor_exits.ipset                  2> /dev/null >/dev/null
- curl -o /tmp/bl.firehol.dm_tor.txt      https://iplists.firehol.org/files/dm_tor.ipset                     2> /dev/null >/dev/null
- curl -o /tmp/bl.firehol.et_tor.txt      https://iplists.firehol.org/files/et_tor.ipset                     2> /dev/null >/dev/null
-
  ## FireHOL open proxies
  curl -o /tmp/bl.filehol.socks.txt       https://iplists.firehol.org/files/socks_proxy.ipset                2> /dev/null >/dev/null
  curl -o /tmp/bl.filehol.ssl.txt         https://iplists.firehol.org/files/sslproxies.ipset                 2> /dev/null >/dev/null
 
 # Download ipv6 dataset
 curl -o /tmp/bl.ipv6_dataset.txt https://raw.githubusercontent.com/youngjun-chang/VPNs/master/vpn-ipv6.txt  2> /dev/null >/dev/null
+
+# Download TOR dataset
+curl -o /tmp/bl.tor_nodes.txt https://www.dan.me.uk/torlist/?full 2> /dev/null >/dev/null
+
+# Download Cloudflare IPs
+curl -o /tmp/bl.cf-ipv4.txt https://www.cloudflare.com/ips-v4/#   2> /dev/null >/dev/null
+curl -o /tmp/bl.cf-ipv6.txt https://www.cloudflare.com/ips-v6/#   2> /dev/null >/dev/null
 
 echo Downloaded dataset! Combining files...
 
