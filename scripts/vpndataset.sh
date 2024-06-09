@@ -29,6 +29,9 @@ curl -o /tmp/bl.tor_nodes.txt https://www.dan.me.uk/torlist/?full 2> /dev/null >
 curl -o /tmp/bl.cf-ipv4.txt https://www.cloudflare.com/ips-v4/#   2> /dev/null >/dev/null
 curl -o /tmp/bl.cf-ipv6.txt https://www.cloudflare.com/ips-v6/#   2> /dev/null >/dev/null
 
+# Extract Mullvad IPs
+bash scripts/extractmullvad.sh > /tmp/bl.mullvad.txt
+
 echo Downloaded dataset! Combining files...
 
 pattern="bl.*\.txt$"
