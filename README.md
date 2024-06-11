@@ -2,7 +2,7 @@
 <div align="center">
 <h1>Artemis</h1>
 <br>
-Discord bot for steering alt accounts away. Alternative to Double Counter.
+Discord's best FOSS bot for protecting your server against alt accounts, VPNs and proxies. No extra features. Alternative to Double Counter. 
 </div><br>
 <div align="center">
 <img alt="GitHub License" src="https://img.shields.io/github/license/uhidontkno/Artemis">
