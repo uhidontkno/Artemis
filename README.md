@@ -7,11 +7,11 @@ Discord's best FOSS bot for protecting your server against alt accounts, VPNs an
 <div align="center">
 <img alt="GitHub License" src="https://img.shields.io/github/license/uhidontkno/Artemis">
  &nbsp;&nbsp;&nbsp;&nbsp;
-<img alt="GitHub forks" src="https://img.shields.io/github/forks/uhidontkno/Artemis?style=flat">&nbsp;
-<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/uhidontkno/Artemis?style=flat">
+<a href="https://github.com/uhidontkno/Artemis/forks"><img alt="GitHub forks" src="https://img.shields.io/github/forks/uhidontkno/Artemis?style=flat"></a>&nbsp;
+<a href="https://github.com/uhidontkno/Artemis/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/uhidontkno/Artemis?style=flat"></a>
  &nbsp;&nbsp;&nbsp;&nbsp;
-<img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues-pr/uhidontkno/Artemis">&nbsp;
-<img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues/uhidontkno/Artemis">
+<a href="https://github.com/uhidontkno/Artemis/issues"><img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues-pr/uhidontkno/Artemis"></a>&nbsp;
+<a href="https://github.com/uhidontkno/Artemis/pulls"><img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues/uhidontkno/Artemis"></a>
 
 </div>
 
