@@ -16,8 +16,8 @@ Discord's best FOSS bot for protecting your server against alt accounts, VPNs an
 </div>
 
 **Links**: <br>
-Website: https://artemis.rare1k.social <br>
-Invite: https://artemis.rare1k.social/invite <br>
+Website: https://artemis-bot.com/ <br>
+Invite: https://artemis-bot.com/invite <br>
 Privacy Policy: Run `/privacy` <br>
 Setup: `bun setup` <br>
 
