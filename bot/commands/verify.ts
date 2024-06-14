@@ -167,11 +167,11 @@ export default class VerifyCommand extends Command {
           await logMsg.edit({ content: log });
         }
         return;
-      } else if (verifMode == -1 || process.env.DEPLOYMENT_URL?.includes("rare1k.dev")) {
+      } else if (verifMode == -1) {
         let em = new Embed({
           title: "Verification is disabled.",
           color: EmbedColors.Red,
-          description: `${process.env.DEPLOYMENT_URL?.includes("rare1k.dev") ? "Verification has been automatically disabled because our domain rare1k.dev has been falsely suspended. " : "Your server admin has disabled verification."}`,
+          description: `Your server admin has disabled verification.`,
         });
         await ctx.editOrReply({ embeds: [em] });
         return;
