@@ -1,3 +1,6 @@
+# Artemis has been moved to [GitLab](https://gitlab.com/uhidontkno/Artemis). This repository will not be updated and all issues/prs open will be closed.
+
+
 <img src="https://artemis.rare1k.social/img/icon.png" width="72" height="72" align="left">
 <div align="center">
 <h1>Artemis</h1>
