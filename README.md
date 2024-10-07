@@ -1,3 +1,4 @@
+# 🚀 Artemis is being rewritten and this repo is now deprecated. See the new repo [here](https://gitlab.com/uhidontkno/artemis-v2)
 # Artemis has been moved to [GitLab](https://gitlab.com/uhidontkno/Artemis). This repository will not be updated and all issues/prs open will be closed.
 
 
